@@ -4,23 +4,23 @@ namespace SecretaryProblem;
 
 public class Hall
 {
-    private List<Contender> Contenders { get; init; }
+    private readonly Queue<Contender> _contenders;
 
-    public Hall(List<Contender> contenders)
+    public Hall(Queue<Contender> contenders)
     {
-        Contenders = contenders;
+        _contenders = contenders;
     }
 
-    public int ContendersCount => Contenders.Count;
+    public int ContendersCount => _contenders.Count;
     
     public Contender GetNextContender()
     {
-        if (Contenders.Count == 0)
+        if (ContendersCount == 0)
         {
             throw new HallException("Hall is empty");
         }
-        var contender = Contenders[0];
-        Contenders.RemoveAt(0);
+
+        var contender = _contenders.Dequeue();
         return contender;
     }
 
