@@ -1,4 +1,4 @@
-﻿using SecretaryProblem.exception;
+﻿using SecretaryProblem.Exceptions;
 
 namespace SecretaryProblem;
 

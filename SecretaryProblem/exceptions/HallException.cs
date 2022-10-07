@@ -1,4 +1,4 @@
-﻿namespace SecretaryProblem.exception;
+﻿namespace SecretaryProblem.Exceptions;
 
 public class HallException : Exception
 {

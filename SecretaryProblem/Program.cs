@@ -8,7 +8,7 @@ for (int i = 0; i < 1000; i++)
 
     var princess = new Princess(new Hall(new Queue<Contender>(contenders)), new Friend());
 
-    contenders.ForEach(contender => Console.WriteLine(contender.Name + " " + contender.Rating));
+    //contenders.ForEach(contender => Console.WriteLine(contender.Name + " " + contender.Rating));
 
     var bestContender = princess.ChooseContender();
 
