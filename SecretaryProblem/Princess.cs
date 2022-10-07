@@ -23,7 +23,7 @@ public class Princess
             var newContender = _hall.GetNextContender();
             bestContender = _friend.Compare(bestContender, newContender);
             
-            if (oldBest != bestContender && iterationsWithoutChanges > 5)
+            if (oldBest != bestContender && iterationsWithoutChanges > 3)
             {
                 return bestContender;
             }
@@ -40,13 +40,15 @@ public class Princess
             
         }
 
-        for (int i = contendersCount / 2; i < contendersCount; i++)
+        for (int i = contendersCount / 2; i < contendersCount - 1; i++)
         {
             var newContender = _hall.GetNextContender();
             var newBestContender = _friend.Compare(bestContender, newContender);
             if (newBestContender != bestContender)
                 return newBestContender;
         }
-        return null;
+        //return null;
+
+        return _hall.GetNextContender();
     }
 }

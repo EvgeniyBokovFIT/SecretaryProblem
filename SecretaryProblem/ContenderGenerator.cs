@@ -40,7 +40,7 @@ public class ContenderGenerator
         var names = GenerateNames();
 
         for (var i = 0; i < _contendersSize; i++) 
-            ratings.Add(i);
+            ratings.Add(i + 1);
 
         for (var i = 0; i < _contendersSize; i++)
         {
