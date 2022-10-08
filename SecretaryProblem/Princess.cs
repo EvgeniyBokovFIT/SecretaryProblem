@@ -11,24 +11,23 @@ public class Princess
         _friend = friend;
         _hall = hall;
     }
-    
-    public Contender? ChooseContender()
+
+    private Contender ChooseContenderFromFirstPart (ICollection<Contender> checkedContenders, int contendersCount, out bool bestChosen)
     {
-        var contenders = new List<Contender>();
-        int iterationsWithoutChanges = 0;
-        var contendersCount = _hall.ContendersCount;
         var bestContender = _hall.GetNextContender();
-        contenders.Add(bestContender);
+        checkedContenders.Add(bestContender);
+        int iterationsWithoutChanges = 0;
         var oldBest = bestContender;
         for (int i = 1; i < contendersCount / 2; i++)
         {
             var newContender = _hall.GetNextContender();
-            contenders.Add(newContender);
+            checkedContenders.Add(newContender);
             bestContender = _friend.Compare(bestContender, newContender);
             
             if (oldBest != bestContender && iterationsWithoutChanges > 3)
             {
-               return bestContender;
+                bestChosen = true;
+                return bestContender;
             }
 
             if (oldBest == bestContender)
@@ -43,10 +42,26 @@ public class Princess
             
         }
 
+        bestChosen = false;
+        return bestContender;
+    }
+    
+    public Contender? ChooseContender()
+    {
+        var checkedContenders = new List<Contender>();
+        var contendersCount = _hall.ContendersCount;
+
+        var bestContender = ChooseContenderFromFirstPart(checkedContenders, contendersCount, out var bestChosen);
+
+        if (bestChosen)
+        {
+            return bestContender;
+        }
+
         for (int i = contendersCount / 2; i < contendersCount - 1; i++)
         {
             var newContender = _hall.GetNextContender();
-            contenders.Add(newContender);
+            checkedContenders.Add(newContender);
             var newBestContender = _friend.Compare(bestContender, newContender);
             if (newBestContender != bestContender)
                 return newBestContender;
@@ -54,7 +69,7 @@ public class Princess
 
         var lastContender = _hall.GetNextContender();
 
-        return contenders.
+        return checkedContenders.
             Count(contender => lastContender != contender && lastContender == _friend.Compare(lastContender, contender)) >= 50 ? 
             lastContender : null;
     }
