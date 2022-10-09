@@ -33,13 +33,11 @@ public class Princess
             if (oldBest == bestContender)
             {
                 iterationsWithoutChanges++;
-            }
-            else
-            {
-                iterationsWithoutChanges = 0;
-                oldBest = bestContender;
+                continue;
             }
             
+            iterationsWithoutChanges = 0;
+            oldBest = bestContender;
         }
 
         bestChosen = false;
@@ -69,8 +67,9 @@ public class Princess
 
         var lastContender = _hall.GetNextContender();
 
-        return checkedContenders.
-            Count(contender => lastContender != contender && lastContender == _friend.Compare(lastContender, contender)) >= 50 ? 
-            lastContender : null;
+        return checkedContenders.Count(contender =>
+            lastContender != contender && lastContender == _friend.Compare(lastContender, contender)) >= 50
+            ? lastContender
+            : null;
     }
 }
