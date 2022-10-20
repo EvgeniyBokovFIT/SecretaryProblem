@@ -1,15 +1,20 @@
-﻿namespace SecretaryProblem;
+﻿using Microsoft.Extensions.Hosting;
 
-public class Princess
+namespace HostedServiceAndDI;
+
+public class Princess : IHostedService
 {
     private readonly Hall _hall;
 
     private readonly Friend _friend;
 
-    public Princess(Hall hall, Friend friend)
+    private readonly FileWriter _fileWriter;
+
+    public Princess(Hall hall, Friend friend, FileWriter fileWriter)
     {
         _friend = friend;
         _hall = hall;
+        _fileWriter = fileWriter;
     }
 
     private bool IsContenderFromTheBetterHalf(Contender contender)
@@ -48,7 +53,7 @@ public class Princess
         return bestContender;
     }
     
-    public Contender? ChooseContender()
+    private Contender? ChooseContender()
     {
         var contendersCount = _hall.ContendersCount;
 
@@ -67,8 +72,48 @@ public class Princess
 
         var lastContender = _hall.GetNextContender();
         _friend.ViewedContenders.Add(lastContender);
-        _hall.GetNextContender();
 
         return IsContenderFromTheBetterHalf(lastContender) ? lastContender : null;
+    }
+
+    private void WriteHappinessToFile(Contender? chosenContender)
+    {
+        if (chosenContender is null)
+        {
+            _fileWriter.WriteHappinessToFile(10);
+            Console.WriteLine(10);
+            return;
+        }
+
+        if (chosenContender.Rating > 50)
+        {
+            _fileWriter.WriteHappinessToFile(chosenContender.Rating);
+            Console.WriteLine(chosenContender.Rating);
+            return;
+        }
+        
+        _fileWriter.WriteHappinessToFile(0);
+        Console.WriteLine(0);
+
+    }
+
+    private void DoWork()
+    {
+        _fileWriter.WriteContendersNamesToFile(_hall.ContendersNames);
+        Contender? chosenContender = ChooseContender();
+        WriteHappinessToFile(chosenContender);
+    }
+
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
+        Console.WriteLine("Princess StartAsync");
+        Task.Run(DoWork);
+        return Task.CompletedTask;
+    }
+
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        Console.WriteLine("Princess StopAsync");
+        return Task.CompletedTask;
     }
 }
