@@ -66,8 +66,6 @@ public class Princess
         }
 
         var lastContender = _hall.GetNextContender();
-        _friend.ViewedContenders.Add(lastContender);
-        _hall.GetNextContender();
 
         return IsContenderFromTheBetterHalf(lastContender) ? lastContender : null;
     }
