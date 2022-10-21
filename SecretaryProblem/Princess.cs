@@ -24,8 +24,10 @@ public class Princess
         _friend.ViewedContenders.Add(bestContender);
         int iterationsWithoutChanges = 0;
         var oldBest = bestContender;
-        for (int i = 1; i < contendersCount / 2; i++)
+        for (int i = 1; i < contendersCount / 2.7; i++)
         {
+            Console.WriteLine(_hall.ContendersCount);
+
             var newContender = _hall.GetNextContender();
             _friend.ViewedContenders.Add(newContender);
             bestContender = _friend.Compare(bestContender, newContender);
@@ -56,8 +58,9 @@ public class Princess
         if (contenderChosen)
             return bestContender;
         
-        for (int i = contendersCount / 2; i < contendersCount - 1; i++)
+        for (int i = (int) (contendersCount / 2.7) + 1; i < contendersCount - 1; i++)
         {
+            Console.WriteLine(_hall.ContendersCount + " " + i);
             var newContender = _hall.GetNextContender();
             _friend.ViewedContenders.Add(newContender);
             var newBestContender = _friend.Compare(bestContender, newContender);
@@ -65,7 +68,10 @@ public class Princess
                 return newBestContender;
         }
 
+        Console.WriteLine(_hall.ContendersCount);
+
         var lastContender = _hall.GetNextContender();
+        _friend.ViewedContenders.Add(lastContender);
 
         return IsContenderFromTheBetterHalf(lastContender) ? lastContender : null;
     }
