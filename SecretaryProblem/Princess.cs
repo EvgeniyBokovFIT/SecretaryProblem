@@ -26,8 +26,6 @@ public class Princess
         var oldBest = bestContender;
         for (int i = 1; i < contendersCount / 2.7; i++)
         {
-            Console.WriteLine(_hall.ContendersCount);
-
             var newContender = _hall.GetNextContender();
             _friend.ViewedContenders.Add(newContender);
             bestContender = _friend.Compare(bestContender, newContender);
@@ -60,7 +58,6 @@ public class Princess
         
         for (int i = (int) (contendersCount / 2.7) + 1; i < contendersCount - 1; i++)
         {
-            Console.WriteLine(_hall.ContendersCount + " " + i);
             var newContender = _hall.GetNextContender();
             _friend.ViewedContenders.Add(newContender);
             var newBestContender = _friend.Compare(bestContender, newContender);

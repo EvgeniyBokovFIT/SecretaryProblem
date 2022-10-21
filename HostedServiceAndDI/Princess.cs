@@ -29,7 +29,7 @@ public class Princess : IHostedService
         _friend.ViewedContenders.Add(bestContender);
         int iterationsWithoutChanges = 0;
         var oldBest = bestContender;
-        for (int i = 1; i < contendersCount / 2; i++)
+        for (int i = 1; i < contendersCount / 2.7; i++)
         {
             var newContender = _hall.GetNextContender();
             _friend.ViewedContenders.Add(newContender);
@@ -61,7 +61,7 @@ public class Princess : IHostedService
         if (contenderChosen)
             return bestContender;
         
-        for (int i = contendersCount / 2; i < contendersCount - 1; i++)
+        for (int i = (int) (contendersCount / 2.7) + 1; i < contendersCount - 1; i++)
         {
             var newContender = _hall.GetNextContender();
             _friend.ViewedContenders.Add(newContender);
