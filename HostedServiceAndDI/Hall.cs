@@ -8,6 +8,10 @@ public class Hall
 
     public List<string> ContendersNames { get; }
 
+    public Hall()
+    {
+        
+    }
     public Hall(ContenderGenerator generator)
     {
         _contenders = new Queue<Contender>(generator.GenerateContenders());
@@ -20,9 +24,9 @@ public class Hall
         }
     }
 
-    public int ContendersCount => _contenders.Count;
+    public virtual int ContendersCount => _contenders.Count;
     
-    public Contender GetNextContender()
+    public virtual Contender GetNextContender()
     {
         if (ContendersCount == 0)
         {

@@ -18,11 +18,10 @@ public class Princess : IHostedService
     }
     
     
-    private Contender? ChooseContender()
+    public Contender? ChooseContender()
     {
         while (_hall.ContendersCount > 0)
         {
-            Console.WriteLine(_hall.ContendersCount);
             var contender = _hall.GetNextContender();
             if (_strategy.IsChosenContender(contender))
             {
