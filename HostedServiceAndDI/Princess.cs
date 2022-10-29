@@ -6,74 +6,31 @@ public class Princess : IHostedService
 {
     private readonly Hall _hall;
 
-    private readonly Friend _friend;
-
     private readonly FileWriter _fileWriter;
+    
+    private readonly IPrincessBehaviour _strategy;
 
-    public Princess(Hall hall, Friend friend, FileWriter fileWriter)
+    public Princess(Hall hall, FileWriter fileWriter, IPrincessBehaviour behaviour)
     {
-        _friend = friend;
         _hall = hall;
         _fileWriter = fileWriter;
+        _strategy = behaviour;
     }
-
-    private bool IsContenderFromTheBetterHalf(Contender contender)
-    { 
-        return _friend.ViewedContenders.Count(checkedContender =>
-            contender != checkedContender && contender == _friend.Compare(contender, checkedContender)) >= 50;
-    }
-
-    private Contender ChooseContenderFromFirstPart (int contendersCount, out bool contenderChosen)
-    {
-        var bestContender = _hall.GetNextContender();
-        _friend.ViewedContenders.Add(bestContender);
-        int iterationsWithoutChanges = 0;
-        var oldBest = bestContender;
-        for (int i = 1; i < contendersCount / 2.7; i++)
-        {
-            var newContender = _hall.GetNextContender();
-            _friend.ViewedContenders.Add(newContender);
-            bestContender = _friend.Compare(bestContender, newContender);
-            if (oldBest != bestContender && iterationsWithoutChanges > 3)
-            {
-                contenderChosen = true;
-                return bestContender;
-            }
-            
-            if (oldBest == bestContender)
-            {
-                iterationsWithoutChanges++;
-                continue;
-            }
-            iterationsWithoutChanges = 0;
-            oldBest = bestContender;
-        }
-
-        contenderChosen = false;
-        return bestContender;
-    }
+    
     
     private Contender? ChooseContender()
     {
-        var contendersCount = _hall.ContendersCount;
-
-        var bestContender = ChooseContenderFromFirstPart(contendersCount, out var contenderChosen);
-        if (contenderChosen)
-            return bestContender;
-        
-        for (int i = (int) (contendersCount / 2.7) + 1; i < contendersCount - 1; i++)
+        while (_hall.ContendersCount > 0)
         {
-            var newContender = _hall.GetNextContender();
-            _friend.ViewedContenders.Add(newContender);
-            var newBestContender = _friend.Compare(bestContender, newContender);
-            if (newBestContender != bestContender)
-                return newBestContender;
+            Console.WriteLine(_hall.ContendersCount);
+            var contender = _hall.GetNextContender();
+            if (_strategy.IsChosenContender(contender))
+            {
+                return contender;
+            }
         }
 
-        var lastContender = _hall.GetNextContender();
-        _friend.ViewedContenders.Add(lastContender);
-
-        return IsContenderFromTheBetterHalf(lastContender) ? lastContender : null;
+        return null;
     }
 
     private void WriteHappinessToFile(Contender? chosenContender)
@@ -88,7 +45,7 @@ public class Princess : IHostedService
         if (chosenContender.Rating > 50)
         {
             _fileWriter.WriteHappinessToFile(chosenContender.Rating);
-            Console.WriteLine(chosenContender.Rating);
+            Console.WriteLine($"Happiness = {chosenContender.Rating}");
             return;
         }
         

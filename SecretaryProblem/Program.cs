@@ -4,11 +4,13 @@ var sum = 0;
 
 var fileWriter = new FileWriter();
 
-for (var i = 0; i < 1000; i++)
+for (var i = 0; i < 100; i++)
 {
     var contenders = new ContenderGenerator().GenerateContenders();
 
-    var princess = new Princess(new Hall(new Queue<Contender>(contenders)), new Friend());
+    IPrincessBehaviour behaviour = new MyStrategy(new Friend());
+
+    var princess = new Princess(new Hall(new Queue<Contender>(contenders)), behaviour);
 
     //contenders.ForEach(contender => Console.WriteLine(contender.Name + " " + contender.Rating));
     
@@ -34,5 +36,5 @@ for (var i = 0; i < 1000; i++)
     Console.WriteLine(0);
 }
 
-var avg = sum / 1000d;
+var avg = sum / 100d;
 Console.WriteLine($"AVG = {avg}");

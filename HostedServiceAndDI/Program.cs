@@ -10,7 +10,8 @@ IHost host = Host.CreateDefaultBuilder(args)
             .AddScoped<Hall>()
             .AddScoped<Friend>()
             .AddScoped<ContenderGenerator>()
-            .AddScoped<FileWriter>();
+            .AddScoped<FileWriter>()
+            .AddScoped<IPrincessBehaviour, MyStrategy>();
     })
     .Build();
 
