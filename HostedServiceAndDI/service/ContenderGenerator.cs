@@ -1,9 +1,17 @@
-﻿namespace HostedServiceAndDI;
+﻿using HostedServiceAndDI.Configuration;
+
+namespace HostedServiceAndDI.service;
 
 public class ContenderGenerator
 {
-    private readonly int _contendersSize = 100;
+    private readonly int _contendersSize;
     private readonly Random _random = new();
+
+    public ContenderGenerator()
+    {
+        var configManager = ConfigProvider.GetConfig();
+        _contendersSize = int.Parse(configManager["ContendersCount"] ?? throw new Exception("Setting not found"));
+    }
 
     private List<string> GenerateNames()
     {

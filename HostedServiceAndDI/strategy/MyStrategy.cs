@@ -1,4 +1,6 @@
-﻿namespace HostedServiceAndDI;
+﻿using HostedServiceAndDI.Configuration;
+
+namespace HostedServiceAndDI.strategy;
 
 public class MyStrategy: IPrincessBehaviour
 {
@@ -13,7 +15,7 @@ public class MyStrategy: IPrincessBehaviour
     public MyStrategy(Friend friend)
     {
         _friend = friend;
-        _contendersCount = 100;
+        _contendersCount = int.Parse(ConfigProvider.GetConfig()["ContendersCount"] ?? throw new Exception());
         _bestContender = new Contender("", 0);
     }
     
@@ -56,7 +58,7 @@ public class MyStrategy: IPrincessBehaviour
     {
         var oldBest = _bestContender;
         _bestContender = _friend.Compare(_bestContender, contender);
-        if (_friend.ViewedContenders.Count == 100)
+        if (_friend.ViewedContenders.Count == _contendersCount)
         {
             if (IsContenderFromTheBetterHalf(contender))
             {
@@ -75,6 +77,6 @@ public class MyStrategy: IPrincessBehaviour
     private bool IsContenderFromTheBetterHalf(Contender contender)
     { 
         return _friend.ViewedContenders.Count(checkedContender =>
-            contender != checkedContender && contender == _friend.Compare(contender, checkedContender)) >= 50;
+            contender != checkedContender && contender == _friend.Compare(contender, checkedContender)) >= _contendersCount/2;
     }
 }

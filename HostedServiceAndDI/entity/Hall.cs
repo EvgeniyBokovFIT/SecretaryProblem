@@ -1,6 +1,7 @@
 ﻿using HostedServiceAndDI.Exceptions;
+using HostedServiceAndDI.service;
 
-namespace HostedServiceAndDI;
+namespace HostedServiceAndDI.entity;
 
 public class Hall
 {
@@ -10,7 +11,8 @@ public class Hall
 
     public Hall()
     {
-        
+        _contenders = new Queue<Contender>();
+        ContendersNames = new List<string>();
     }
     public Hall(ContenderGenerator generator)
     {

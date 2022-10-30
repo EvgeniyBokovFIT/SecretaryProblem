@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using HostedServiceAndDI.strategy;
+using Microsoft.Extensions.Hosting;
 
-namespace HostedServiceAndDI;
+namespace HostedServiceAndDI.entity;
 
 public class Princess : IHostedService
 {
@@ -22,6 +23,7 @@ public class Princess : IHostedService
     {
         while (_hall.ContendersCount > 0)
         {
+            Console.WriteLine("hall count" + _hall.ContendersCount);
             var contender = _hall.GetNextContender();
             if (_strategy.IsChosenContender(contender))
             {

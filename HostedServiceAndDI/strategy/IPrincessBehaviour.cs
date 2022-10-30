@@ -1,4 +1,4 @@
-﻿namespace HostedServiceAndDI;
+﻿namespace HostedServiceAndDI.strategy;
 
 public interface IPrincessBehaviour
 {
