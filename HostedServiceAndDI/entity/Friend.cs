@@ -15,7 +15,7 @@ public class Friend
     {
         if (!ViewedContenders.Contains(first) || !ViewedContenders.Contains(second))
         {
-            throw new UnviewedContenderComparingException("Contender was not viewed");
+            throw new UnviewedContenderException("Contender was not viewed");
         }
         return first.Rating > second.Rating ? first : second;
         

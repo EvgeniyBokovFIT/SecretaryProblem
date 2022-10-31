@@ -30,7 +30,6 @@ public class Princess : IHostedService
         {
             for (int i = 0; i < _contendersCount; i++)
             {
-                Console.WriteLine("hall count" + _hall.ContendersCount);
                 var contender = _hall.GetNextContender();
                 if (_strategy.IsChosenContender(contender))
                 {
