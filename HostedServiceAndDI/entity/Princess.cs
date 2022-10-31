@@ -1,4 +1,6 @@
-﻿using HostedServiceAndDI.strategy;
+﻿using HostedServiceAndDI.Configuration;
+using HostedServiceAndDI.Exceptions;
+using HostedServiceAndDI.strategy;
 using Microsoft.Extensions.Hosting;
 
 namespace HostedServiceAndDI.entity;
@@ -11,24 +13,36 @@ public class Princess : IHostedService
     
     private readonly IPrincessBehaviour _strategy;
 
+    private readonly int _contendersCount;
+
     public Princess(Hall hall, FileWriter fileWriter, IPrincessBehaviour behaviour)
     {
         _hall = hall;
         _fileWriter = fileWriter;
         _strategy = behaviour;
+        _contendersCount = int.Parse(ConfigProvider.GetConfig()["ContendersCount"] ?? throw new Exception());
     }
     
     
     public Contender? ChooseContender()
     {
-        while (_hall.ContendersCount > 0)
+        try
         {
-            Console.WriteLine("hall count" + _hall.ContendersCount);
-            var contender = _hall.GetNextContender();
-            if (_strategy.IsChosenContender(contender))
+            for (int i = 0; i < _contendersCount; i++)
             {
-                return contender;
+                Console.WriteLine("hall count" + _hall.ContendersCount);
+                var contender = _hall.GetNextContender();
+                if (_strategy.IsChosenContender(contender))
+                {
+                    return contender;
+                }
             }
+            
+        }
+        catch(EmptyHallException)
+        {
+            Console.WriteLine("HallExc");
+            return null;
         }
 
         return null;

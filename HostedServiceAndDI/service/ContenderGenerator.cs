@@ -41,7 +41,7 @@ public class ContenderGenerator
         return names;
     }
 
-    public List<Contender> GenerateContenders()
+    public IEnumerable<Contender> GenerateContenders()
     {
         var contenders = new List<Contender>();
         var ratings = new List<int>();
@@ -55,7 +55,7 @@ public class ContenderGenerator
             var ratingsCurIndex = _random.Next(ratings.Count);
             var rating = ratings[ratingsCurIndex];
             ratings.RemoveAt(ratingsCurIndex);
-            Console.WriteLine(names[i] + " " + rating);
+            Console.WriteLine($"{names[i]} {rating}");
             contenders.Add(new Contender(names[i], rating));
         }
         
