@@ -1,6 +1,6 @@
 ﻿using HostedServiceAndDI.Configuration;
 
-namespace HostedServiceAndDI.service;
+namespace HostedServiceAndDI.Service;
 
 public class ContenderGenerator
 {

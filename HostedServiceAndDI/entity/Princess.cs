@@ -1,9 +1,9 @@
 ﻿using HostedServiceAndDI.Configuration;
 using HostedServiceAndDI.Exceptions;
-using HostedServiceAndDI.strategy;
+using HostedServiceAndDI.Strategy;
 using Microsoft.Extensions.Hosting;
 
-namespace HostedServiceAndDI.entity;
+namespace HostedServiceAndDI.Entity;
 
 public class Princess : IHostedService
 {

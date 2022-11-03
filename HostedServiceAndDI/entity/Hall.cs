@@ -1,7 +1,7 @@
 ﻿using HostedServiceAndDI.Exceptions;
-using HostedServiceAndDI.service;
+using HostedServiceAndDI.Service;
 
-namespace HostedServiceAndDI.entity;
+namespace HostedServiceAndDI.Entity;
 
 public class Hall
 {

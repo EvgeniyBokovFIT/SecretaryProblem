@@ -1,7 +1,7 @@
 ﻿using HostedServiceAndDI;
-using HostedServiceAndDI.entity;
-using HostedServiceAndDI.service;
-using HostedServiceAndDI.strategy;
+using HostedServiceAndDI.Entity;
+using HostedServiceAndDI.Service;
+using HostedServiceAndDI.Strategy;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 

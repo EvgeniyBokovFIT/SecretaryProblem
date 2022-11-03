@@ -1,7 +1,7 @@
 using HostedServiceAndDI.Configuration;
-using HostedServiceAndDI.entity;
+using HostedServiceAndDI.Entity;
 using HostedServiceAndDI.Exceptions;
-using HostedServiceAndDI.strategy;
+using HostedServiceAndDI.Strategy;
 using NUnit.Framework;
 using Moq;
 
