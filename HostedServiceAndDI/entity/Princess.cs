@@ -47,38 +47,59 @@ public class Princess : IHostedService
         return null;
     }
 
-    private void WriteHappinessToFile(Contender? chosenContender)
+    private int GetHappiness(Contender? chosenContender)
     {
         if (chosenContender is null)
         {
-            _fileWriter.WriteHappinessToFile(10);
-            Console.WriteLine(10);
-            return;
+            return 10;
         }
 
         if (chosenContender.Rating > 50)
         {
-            _fileWriter.WriteHappinessToFile(chosenContender.Rating);
-            Console.WriteLine($"Happiness = {chosenContender.Rating}");
-            return;
+            return chosenContender.Rating;
         }
-        
-        _fileWriter.WriteHappinessToFile(0);
-        Console.WriteLine(0);
 
+        return 0;
     }
 
-    private void DoWork()
+    private void WriteHappinessToFile(Contender? chosenContender)
+    {
+        int happiness = GetHappiness(chosenContender);
+
+        _fileWriter.WriteHappinessToFile(happiness);
+    }
+
+    private void DoOneTry()
     {
         _fileWriter.WriteContendersNamesToFile(_hall.ContendersNames);
         Contender? chosenContender = ChooseContender();
         WriteHappinessToFile(chosenContender);
     }
 
+    private void DoSeveralTries(int triesCount)
+    {
+        double averageHappiness = 0;
+        for (int i = 0; i < triesCount; i++)
+        {
+            _hall.FillContenders();
+            _strategy.Reset();
+            
+            _fileWriter.WriteContendersNamesToFile(_hall.ContendersNames);
+            Contender? chosenContender = ChooseContender();
+            WriteHappinessToFile(chosenContender);
+            averageHappiness += GetHappiness(chosenContender);
+        }
+
+        averageHappiness /= triesCount;
+        Console.WriteLine($"Average happiness {averageHappiness}");
+    }
+    
+    
+
     public Task StartAsync(CancellationToken cancellationToken)
     {
         Console.WriteLine("Princess StartAsync");
-        Task.Run(DoWork);
+        Task.Run(() => DoSeveralTries(100));
         return Task.CompletedTask;
     }
 

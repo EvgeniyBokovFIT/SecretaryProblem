@@ -6,7 +6,7 @@ namespace HostedServiceAndDI.Service;
 public class ContenderGenerator
 {
     private readonly int _contendersSize;
-    private readonly Random _random = new();
+    private Random _random = new ();
 
     public ContenderGenerator()
     {
@@ -44,6 +44,7 @@ public class ContenderGenerator
 
     public IEnumerable<Contender> GenerateContenders()
     {
+        _random = new();
         var contenders = new List<Contender>();
         var ratings = new List<int>();
         var names = GenerateNames();
@@ -56,7 +57,7 @@ public class ContenderGenerator
             var ratingsCurIndex = _random.Next(ratings.Count);
             var rating = ratings[ratingsCurIndex];
             ratings.RemoveAt(ratingsCurIndex);
-            Console.WriteLine($"{names[i]} {rating}");
+            //Console.WriteLine($"{names[i]} {rating} {i}");
             contenders.Add(new Contender(names[i], rating));
         }
         

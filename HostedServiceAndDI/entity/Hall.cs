@@ -5,18 +5,17 @@ namespace HostedServiceAndDI.Entity;
 
 public class Hall
 {
-    private readonly Queue<Contender> _contenders;
+    private Queue<Contender> _contenders;
 
-    public List<string> ContendersNames { get; }
+    private readonly ContenderGenerator _generator;
 
-    public Hall()
-    {
-        _contenders = new Queue<Contender>();
-        ContendersNames = new List<string>();
-    }
+    public List<string> ContendersNames { get; private set; }
+
     public Hall(ContenderGenerator generator)
     {
-        _contenders = new Queue<Contender>(generator.GenerateContenders());
+        _generator = generator;
+        
+        _contenders = new Queue<Contender>(_generator.GenerateContenders());
 
         ContendersNames = new List<string>();
         
@@ -37,6 +36,18 @@ public class Hall
 
         var contender = _contenders.Dequeue();
         return contender;
+    }
+
+    public void FillContenders()
+    {
+        _contenders = new Queue<Contender>(_generator.GenerateContenders());
+
+        ContendersNames = new List<string>();
+        
+        foreach (var contender in _contenders)
+        {
+            ContendersNames.Add(contender.Name);
+        }
     }
 
 }

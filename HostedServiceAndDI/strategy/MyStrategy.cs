@@ -19,6 +19,13 @@ public class MyStrategy: IPrincessBehaviour
         _contendersCount = int.Parse(ConfigProvider.GetConfig()["ContendersCount"] ?? throw new Exception());
         _bestContender = new Contender("", 0);
     }
+
+    public void Reset()
+    {
+        _bestContender = new Contender("", 0);
+        _friend.ViewedContenders.Clear();
+        _iterationsWithoutChanges = 0;
+    }
     
     public bool IsChosenContender(Contender contender)
     {
@@ -40,7 +47,7 @@ public class MyStrategy: IPrincessBehaviour
     {
         var oldBest = _bestContender;
         _bestContender = _friend.Compare(_bestContender, contender);
-        if (_bestContender != oldBest && _iterationsWithoutChanges > 3)
+        if (_bestContender != oldBest && _iterationsWithoutChanges > 4)
         {
             return true;
         }
