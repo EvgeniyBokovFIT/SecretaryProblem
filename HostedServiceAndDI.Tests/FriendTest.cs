@@ -1,4 +1,5 @@
-﻿using HostedServiceAndDI.Exceptions;
+﻿using HostedServiceAndDI.Entity;
+using HostedServiceAndDI.Exceptions;
 using NUnit.Framework;
 
 namespace HostedServiceAndDI.Tests;

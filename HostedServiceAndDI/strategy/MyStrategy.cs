@@ -1,4 +1,5 @@
 ﻿using HostedServiceAndDI.Configuration;
+using HostedServiceAndDI.Entity;
 
 namespace HostedServiceAndDI.Strategy;
 

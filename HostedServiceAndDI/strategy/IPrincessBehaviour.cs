@@ -1,4 +1,6 @@
-﻿namespace HostedServiceAndDI.Strategy;
+﻿using HostedServiceAndDI.Entity;
+
+namespace HostedServiceAndDI.Strategy;
 
 public interface IPrincessBehaviour
 {
