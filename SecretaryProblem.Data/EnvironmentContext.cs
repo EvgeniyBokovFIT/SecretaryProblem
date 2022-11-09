@@ -1,23 +1,24 @@
-﻿using HostedServiceAndDI.Entity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace SecretaryProblem.Data;
 
 public class EnvironmentContext: DbContext
 {
-    public DbSet<Contender> Contenders { get; set; }
+    public DbSet<DbContender> DbContenders { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var connectionString =
             @"Server=localhost;Database=SecretaryProblem;
             User Id=postgres;Password=password";
+        
         optionsBuilder.UseNpgsql(connectionString);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Contender>()
+        modelBuilder.Entity<DbContender>()
             .HasKey(c => new { c.TryId, c.SequenceNumber });
+        
     }
 }

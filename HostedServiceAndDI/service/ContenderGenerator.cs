@@ -1,5 +1,6 @@
 ﻿using HostedServiceAndDI.Configuration;
-using HostedServiceAndDI.Entity;
+using SecretaryProblem.Data;
+using Contender = HostedServiceAndDI.Entity.Contender;
 
 namespace HostedServiceAndDI.Service;
 
@@ -7,7 +8,7 @@ public class ContenderGenerator
 {
     private readonly int _contendersSize;
     private Random _random = new ();
-
+    
     public ContenderGenerator()
     {
         var configManager = ConfigProvider.GetConfig();
@@ -60,7 +61,7 @@ public class ContenderGenerator
             //Console.WriteLine($"{names[i]} {rating} {i}");
             contenders.Add(new Contender(names[i], rating));
         }
-        
+
         return contenders;
     }
 }

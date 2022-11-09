@@ -5,7 +5,9 @@ namespace HostedServiceAndDI.Entity;
 
 public class Hall
 {
-    private Queue<Contender> _contenders;
+    public Hall() {}
+    
+    public Queue<Contender> Contenders;
 
     private readonly ContenderGenerator _generator;
 
@@ -15,17 +17,17 @@ public class Hall
     {
         _generator = generator;
         
-        _contenders = new Queue<Contender>(_generator.GenerateContenders());
+        Contenders = new Queue<Contender>(_generator.GenerateContenders());
 
         ContendersNames = new List<string>();
         
-        foreach (var contender in _contenders)
+        foreach (var contender in Contenders)
         {
             ContendersNames.Add(contender.Name);
         }
     }
 
-    public virtual int ContendersCount => _contenders.Count;
+    public virtual int ContendersCount => Contenders.Count;
     
     public virtual Contender GetNextContender()
     {
@@ -34,17 +36,17 @@ public class Hall
             throw new EmptyHallException("Hall is empty");
         }
 
-        var contender = _contenders.Dequeue();
+        var contender = Contenders.Dequeue();
         return contender;
     }
 
     public void FillContenders()
     {
-        _contenders = new Queue<Contender>(_generator.GenerateContenders());
+        Contenders = new Queue<Contender>(_generator.GenerateContenders());
 
         ContendersNames = new List<string>();
         
-        foreach (var contender in _contenders)
+        foreach (var contender in Contenders)
         {
             ContendersNames.Add(contender.Name);
         }
