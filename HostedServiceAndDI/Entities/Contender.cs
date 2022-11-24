@@ -2,10 +2,6 @@
 
 public class Contender
 {
-    public int TryId { get; set; }
-    
-    public int SequenceNumber { get; set; }
-    
     public string Name { get; init; }
     
     public int Rating { get; init; }
@@ -14,5 +10,10 @@ public class Contender
     {
         Name = name;
         Rating = rating;
+    }
+
+    public override string ToString()
+    {
+        return $"Name: {Name} Rating:{Rating}";
     }
 }

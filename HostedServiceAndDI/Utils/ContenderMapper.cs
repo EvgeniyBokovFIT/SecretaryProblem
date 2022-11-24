@@ -9,9 +9,16 @@ public static class ContenderMapper
     {
         var dbContender = new DbContender
         {
-            Name = contender.Name, Rating = contender.Rating,
-            SequenceNumber = contenderNumber, TryId = tryNumber
+            Name = contender.Name, 
+            Rating = contender.Rating,
+            SequenceNumber = contenderNumber, 
+            TryId = tryNumber
         };
         return dbContender;
+    }
+
+    public static Contender MapDbContenderToContender(DbContender dbContender)
+    {
+        return new Contender(dbContender.Name, dbContender.Rating);
     }
 }

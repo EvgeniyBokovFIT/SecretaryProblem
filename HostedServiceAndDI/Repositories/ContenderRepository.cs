@@ -10,11 +10,10 @@ public class ContenderRepository
     public ContenderRepository(EnvironmentContext context)
     {
         _context = context;
-        _context.Database.EnsureDeleted();
-        _context.Database.EnsureCreated();
     }
     public void SaveContenders(IEnumerable<DbContender> contenders, int tryNumber)
     {
+        _context.Database.EnsureCreated();
         int contenderNumber = 1;
         foreach (var contender in contenders)
         {
@@ -30,8 +29,10 @@ public class ContenderRepository
         _context.SaveChanges();
     }
 
-    public List<DbContender> GetUsersByTryId(int tryId)
+    public List<DbContender> GetDbContendersByTryId(int tryId)
     {
+        Console.WriteLine(tryId);
+        Console.WriteLine(_context.DbContenders.Count(c => c.TryId == tryId));
         return _context.DbContenders.Where(c => c.TryId == tryId).ToList();
     }
 }

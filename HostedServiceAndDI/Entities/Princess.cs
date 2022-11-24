@@ -88,6 +88,8 @@ public class Princess : IHostedService
     {
         _fileWriter.WriteContendersNamesToFile(_hall.ContendersNames);
         Contender? chosenContender = ChooseContender();
+        Console.WriteLine("Choosen contender: " + chosenContender);
+        Console.WriteLine(GetHappiness(chosenContender));
         WriteHappinessToFile(chosenContender);
     }
 
@@ -112,6 +114,8 @@ public class Princess : IHostedService
             var chosenContender = ChooseContender();
             WriteHappinessToFile(chosenContender);
             averageHappiness += GetHappiness(chosenContender);
+            Console.WriteLine("Choosen contender: " + chosenContender);
+            Console.WriteLine(GetHappiness(chosenContender));
 
             _hall.FillContenders();
             _strategy.Reset();
@@ -123,6 +127,13 @@ public class Princess : IHostedService
 
     private void SimulateProcessOfChoosingByTryNumber(int tryNumber)
     {
+        IEnumerable<Contender> contenders = _contenderRepository.GetDbContendersByTryId(tryNumber)
+            .Select(ContenderMapper.MapDbContenderToContender);
+        Console.WriteLine("LLLLLLLLL");
+        Console.WriteLine();
+        _hall.Contenders = new Queue<Contender>(contenders);
+        Console.WriteLine(_hall.Contenders.Count);
+        DoOneTry();
     }
     
     public Task StartAsync(CancellationToken cancellationToken)
@@ -136,8 +147,8 @@ public class Princess : IHostedService
             Task.Run(() => DoSeveralTries(100));
             return Task.CompletedTask;
         }
-        Console.WriteLine("Princess StartAsync");
-        Task.Run(() => DoSeveralTries(100));
+        int tryNumber = Int32.Parse(input);
+        Task.Run(() => SimulateProcessOfChoosingByTryNumber(tryNumber));
         return Task.CompletedTask;
     }
 
