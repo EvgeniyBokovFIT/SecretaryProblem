@@ -13,4 +13,8 @@
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0-rc.2.22472.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\SecretaryProblem.Data\SecretaryProblem.Data.csproj" />
+    </ItemGroup>
+
 </Project>
