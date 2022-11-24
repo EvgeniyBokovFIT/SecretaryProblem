@@ -2,7 +2,7 @@
 using HostedServiceAndDI.Exceptions;
 using HostedServiceAndDI.Repositories;
 using HostedServiceAndDI.Strategies;
-using Microsoft.EntityFrameworkCore;
+using HostedServiceAndDI.Utils;
 using Microsoft.Extensions.Hosting;
 using SecretaryProblem.Data;
 
@@ -96,7 +96,18 @@ public class Princess : IHostedService
         double averageHappiness = 0;
         for (var i = 0; i < triesCount; i++)
         {
-            _contenderRepository.SaveContenders(_hall.Contenders, i + 1);
+            var enumerableContenders =
+                _hall.Contenders
+                    .AsEnumerable();
+            var dbContenders = new List<DbContender>();
+            int contenderNumber = 0;
+            foreach (var contender in enumerableContenders)
+            {
+                dbContenders.Add(ContenderMapper.
+                    MapContenderToDbContender(contender, contenderNumber, i + 1));
+            }
+            
+            _contenderRepository.SaveContenders(dbContenders, i + 1);
             _fileWriter.WriteContendersNamesToFile(_hall.ContendersNames);
             var chosenContender = ChooseContender();
             WriteHappinessToFile(chosenContender);
@@ -109,15 +120,19 @@ public class Princess : IHostedService
         averageHappiness /= triesCount;
         Console.WriteLine($"Average happiness {averageHappiness}");
     }
+
+    private void SimulateProcessOfChoosingByTryNumber(int tryNumber)
+    {
+    }
     
     public Task StartAsync(CancellationToken cancellationToken)
     {
+        Console.WriteLine("Princess StartAsync");
         Console.WriteLine("Enter \"Generate\" to generate 100 tries");
         Console.WriteLine("Enter number of attempt from (1 to 100) to simulate princess behaviour on this attempt");
-        string? input = Console.ReadLine();
+        string input = Console.ReadLine() ?? "Generate";
         if (input.Equals("Generate"))
         {
-            Console.WriteLine("Princess StartAsync");
             Task.Run(() => DoSeveralTries(100));
             return Task.CompletedTask;
         }

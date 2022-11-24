@@ -13,7 +13,7 @@ public class ContenderRepository
         _context.Database.EnsureDeleted();
         _context.Database.EnsureCreated();
     }
-    public void SaveContenders(IEnumerable<Contender> contenders, int tryNumber)
+    public void SaveContenders(IEnumerable<DbContender> contenders, int tryNumber)
     {
         int contenderNumber = 1;
         foreach (var contender in contenders)
@@ -28,5 +28,10 @@ public class ContenderRepository
         }
 
         _context.SaveChanges();
+    }
+
+    public List<DbContender> GetUsersByTryId(int tryId)
+    {
+        return _context.DbContenders.Where(c => c.TryId == tryId).ToList();
     }
 }

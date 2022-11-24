@@ -9,9 +9,9 @@ public class Hall
     
     public Queue<Contender> Contenders;
 
-    private readonly ContenderGenerator _generator;
+    private readonly ContenderGenerator? _generator;
 
-    public List<string> ContendersNames { get; private set; }
+    public List<string>? ContendersNames { get; private set; }
 
     public Hall(ContenderGenerator generator)
     {
