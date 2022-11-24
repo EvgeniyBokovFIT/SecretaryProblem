@@ -47,7 +47,7 @@ public class MyStrategy: IPrincessBehaviour
     {
         var oldBest = _bestContender;
         _bestContender = _friend.Compare(_bestContender, contender);
-        if (_bestContender != oldBest && _iterationsWithoutChanges > 4)
+        if (_bestContender != oldBest && _iterationsWithoutChanges > 7)
         {
             return true;
         }
@@ -68,7 +68,7 @@ public class MyStrategy: IPrincessBehaviour
         _bestContender = _friend.Compare(_bestContender, contender);
         if (_friend.ViewedContenders.Count == _contendersCount)
         {
-            if (IsContenderFromTheBetterHalf(contender))
+            if (IsContenderGivePoints(contender))
             {
                 return true;
             }
@@ -82,9 +82,15 @@ public class MyStrategy: IPrincessBehaviour
         return false;
     }
     
-    private bool IsContenderFromTheBetterHalf(Contender contender)
-    { 
-        return _friend.ViewedContenders.Count(checkedContender =>
-            contender != checkedContender && contender == _friend.Compare(contender, checkedContender)) >= _contendersCount/2;
+    private bool IsContenderGivePoints(Contender contender)
+    {
+        var lastContenderBetterThan = _friend.ViewedContenders.Count(checkedContender =>
+            contender != checkedContender && contender == _friend.Compare(contender, checkedContender));
+        if (lastContenderBetterThan == 99 || lastContenderBetterThan == 97 || lastContenderBetterThan == 95)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

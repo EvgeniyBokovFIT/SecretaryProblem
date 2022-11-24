@@ -4,7 +4,7 @@ var sum = 0;
 
 var fileWriter = new FileWriter();
 
-for (var i = 0; i < 100; i++)
+for (var i = 0; i < 1000; i++)
 {
     var contenders = new ContenderGenerator().GenerateContenders();
 
@@ -24,11 +24,25 @@ for (var i = 0; i < 100; i++)
         continue;
     }
 
-    if (bestContender.Rating > 50)
+    if (bestContender.Rating.Equals(100))
     {
-        Console.WriteLine(bestContender.Rating);
+        Console.WriteLine(20);
         fileWriter.WriteToFile("SecretaryProblem.txt", contenders, bestContender.Rating);
-        sum += bestContender.Rating;
+        sum += 20;
+        continue;
+    }
+    if (bestContender.Rating.Equals(98))
+    {
+        Console.WriteLine(50);
+        fileWriter.WriteToFile("SecretaryProblem.txt", contenders, bestContender.Rating);
+        sum += 50;
+        continue;
+    }
+    if (bestContender.Rating.Equals(96))
+    {
+        Console.WriteLine(100);
+        fileWriter.WriteToFile("SecretaryProblem.txt", contenders, bestContender.Rating);
+        sum += 100;
         continue;
     }
 
@@ -36,5 +50,5 @@ for (var i = 0; i < 100; i++)
     Console.WriteLine(0);
 }
 
-var avg = sum / 100d;
+var avg = sum / 1000d;
 Console.WriteLine($"AVG = {avg}");

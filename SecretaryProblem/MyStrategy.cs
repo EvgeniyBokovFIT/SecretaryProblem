@@ -25,7 +25,7 @@ public class MyStrategy: IPrincessBehaviour
             _bestContender = contender;
             return false;
         }
-        if (_friend.ViewedContenders.Count < _contendersCount / 2.7)
+        if (_friend.ViewedContenders.Count < _contendersCount / 1.2)
         {
             return IsChosenContenderFromFirstPart(contender);
         }
@@ -37,8 +37,9 @@ public class MyStrategy: IPrincessBehaviour
     {
         var oldBest = _bestContender;
         _bestContender = _friend.Compare(_bestContender, contender);
-        if (_bestContender != oldBest && _iterationsWithoutChanges > 3)
+        if (_bestContender != oldBest && _iterationsWithoutChanges > 7)
         {
+            Console.WriteLine("A " + _bestContender.Rating);
             return true;
         }
 
@@ -58,8 +59,9 @@ public class MyStrategy: IPrincessBehaviour
         _bestContender = _friend.Compare(_bestContender, contender);
         if (_friend.ViewedContenders.Count == 100)
         {
-            if (IsContenderFromTheBetterHalf(contender))
+            if (IsContenderGivePoints(contender))
             {
+                Console.WriteLine("B");
                 return true;
             }
 
@@ -67,14 +69,21 @@ public class MyStrategy: IPrincessBehaviour
         }
         if(_bestContender != oldBest)
         {
+            Console.WriteLine("C");
             return true;
         }
         return false;
     }
     
-    private bool IsContenderFromTheBetterHalf(Contender contender)
-    { 
-        return _friend.ViewedContenders.Count(checkedContender =>
-            contender != checkedContender && contender == _friend.Compare(contender, checkedContender)) >= 50;
+    private bool IsContenderGivePoints(Contender contender)
+    {
+        var lastContenderBetterThan = _friend.ViewedContenders.Count(checkedContender =>
+            contender != checkedContender && contender == _friend.Compare(contender, checkedContender));
+        if (lastContenderBetterThan == 99 || lastContenderBetterThan == 97 || lastContenderBetterThan == 95)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

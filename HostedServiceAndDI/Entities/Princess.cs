@@ -59,9 +59,19 @@ public class Princess : IHostedService
             return 10;
         }
 
-        if (chosenContender.Rating > 50)
+        if (chosenContender.Rating.Equals(_contendersCount))
         {
-            return chosenContender.Rating;
+            return 20;
+        }
+        
+        if (chosenContender.Rating.Equals(_contendersCount - 2))
+        {
+            return 50;
+        }
+        
+        if (chosenContender.Rating.Equals(_contendersCount - 4))
+        {
+            return 100;
         }
 
         return 0;
@@ -102,6 +112,15 @@ public class Princess : IHostedService
     
     public Task StartAsync(CancellationToken cancellationToken)
     {
+        Console.WriteLine("Enter \"Generate\" to generate 100 tries");
+        Console.WriteLine("Enter number of attempt from (1 to 100) to simulate princess behaviour on this attempt");
+        string? input = Console.ReadLine();
+        if (input.Equals("Generate"))
+        {
+            Console.WriteLine("Princess StartAsync");
+            Task.Run(() => DoSeveralTries(100));
+            return Task.CompletedTask;
+        }
         Console.WriteLine("Princess StartAsync");
         Task.Run(() => DoSeveralTries(100));
         return Task.CompletedTask;
