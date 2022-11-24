@@ -1,6 +1,6 @@
 ﻿using HostedServiceAndDI.Exceptions;
 
-namespace HostedServiceAndDI.Entity;
+namespace HostedServiceAndDI.Entities;
 
 public class Friend
 {

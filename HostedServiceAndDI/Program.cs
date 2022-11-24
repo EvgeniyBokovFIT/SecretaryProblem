@@ -1,7 +1,8 @@
 ﻿using HostedServiceAndDI;
-using HostedServiceAndDI.Entity;
+using HostedServiceAndDI.Entities;
+using HostedServiceAndDI.Repositories;
 using HostedServiceAndDI.Service;
-using HostedServiceAndDI.Strategy;
+using HostedServiceAndDI.Strategies;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using SecretaryProblem.Data;
@@ -11,6 +12,7 @@ IHost host = Host.CreateDefaultBuilder(args)
     {
         services
             .AddHostedService<Princess>()
+            .AddSingleton<ContenderRepository>()
             .AddSingleton<EnvironmentContext>()
             .AddScoped<Hall>()
             .AddScoped<Friend>()

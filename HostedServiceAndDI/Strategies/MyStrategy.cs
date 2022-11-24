@@ -1,7 +1,7 @@
 ﻿using HostedServiceAndDI.Configuration;
-using HostedServiceAndDI.Entity;
+using HostedServiceAndDI.Entities;
 
-namespace HostedServiceAndDI.Strategy;
+namespace HostedServiceAndDI.Strategies;
 
 public class MyStrategy: IPrincessBehaviour
 {

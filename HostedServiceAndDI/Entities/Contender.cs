@@ -1,4 +1,4 @@
-﻿namespace HostedServiceAndDI.Entity;
+﻿namespace HostedServiceAndDI.Entities;
 
 public class Contender
 {

@@ -1,7 +1,8 @@
 using HostedServiceAndDI.Configuration;
-using HostedServiceAndDI.Entity;
+using HostedServiceAndDI.Entities;
 using HostedServiceAndDI.Exceptions;
-using HostedServiceAndDI.Strategy;
+using HostedServiceAndDI.Repositories;
+using HostedServiceAndDI.Strategies;
 using NUnit.Framework;
 using Moq;
 using SecretaryProblem.Data;
@@ -27,7 +28,8 @@ public class PrincessTest
 
         var mockWriter = new Mock<FileWriter>();
         var mockStrategy = new Mock<MyStrategy>(new Friend());
-        var princess = new Princess(mockHall.Object, mockWriter.Object, mockStrategy.Object, new EnvironmentContext());
+        var princess = new Princess(mockHall.Object, mockWriter.Object, mockStrategy.Object, 
+            new ContenderRepository(new EnvironmentContext()));
         var chosenContender = princess.ChooseContender();
         Assert.That(chosenContender?.Rating, Is.EqualTo(Convert.ToInt32(_contendersCount/2.7 + 1)));
     }
@@ -57,7 +59,8 @@ public class PrincessTest
         
         var mockWriter = new Mock<FileWriter>();
         var mockStrategy = new Mock<MyStrategy>(new Friend());
-        var princess = new Princess(mockHall.Object, mockWriter.Object, mockStrategy.Object, new EnvironmentContext());
+        var princess = new Princess(mockHall.Object, mockWriter.Object, 
+            mockStrategy.Object, new ContenderRepository(new EnvironmentContext()));
         var chosenContender = princess.ChooseContender();
         
         Assert.That(chosenContender?.Rating, Is.EqualTo(_contendersCount));
@@ -95,7 +98,8 @@ public class PrincessTest
 
         var mockWriter = new Mock<FileWriter>();
         var mockStrategy = new Mock<MyStrategy>(new Friend());
-        var princess = new Princess(mockHall.Object, mockWriter.Object, mockStrategy.Object, new EnvironmentContext());
+        var princess = new Princess(mockHall.Object, mockWriter.Object, 
+                mockStrategy.Object, new ContenderRepository(new EnvironmentContext()));
         var chosenContender = princess.ChooseContender();
         
         Assert.That(chosenContender, Is.EqualTo(null));

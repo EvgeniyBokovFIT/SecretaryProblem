@@ -1,4 +1,4 @@
-﻿using HostedServiceAndDI.Entity;
+﻿using HostedServiceAndDI.Entities;
 using HostedServiceAndDI.Exceptions;
 using NUnit.Framework;
 

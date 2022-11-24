@@ -1,12 +1,12 @@
 ﻿using HostedServiceAndDI.Configuration;
 using HostedServiceAndDI.Exceptions;
-using HostedServiceAndDI.service;
-using HostedServiceAndDI.Strategy;
+using HostedServiceAndDI.Repositories;
+using HostedServiceAndDI.Strategies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using SecretaryProblem.Data;
 
-namespace HostedServiceAndDI.Entity;
+namespace HostedServiceAndDI.Entities;
 
 public class Princess : IHostedService
 {
@@ -18,15 +18,15 @@ public class Princess : IHostedService
 
     private readonly int _contendersCount;
 
-    private readonly EnvironmentContext _context;
+    private readonly ContenderRepository _contenderRepository;
 
-    public Princess(Hall hall, FileWriter fileWriter, IPrincessBehaviour behaviour, EnvironmentContext context)
+    public Princess(Hall hall, FileWriter fileWriter, IPrincessBehaviour behaviour, ContenderRepository contenderRepository)
     {
         _hall = hall;
         _fileWriter = fileWriter;
         _strategy = behaviour;
         _contendersCount = int.Parse(ConfigProvider.GetConfig()["ContendersCount"] ?? throw new Exception());
-        _context = context;
+        _contenderRepository = contenderRepository;
     }
     
     
@@ -83,41 +83,21 @@ public class Princess : IHostedService
 
     private void DoSeveralTries(int triesCount)
     {
-            // _context.Database.EnsureCreated();
-            double averageHappiness = 0;
-            for (int i = 0; i < triesCount; i++)
-            {
-                // int contenderNumber = 1;
-                // foreach (var contender in _hall.Contenders)
-                // {
-                //     var dbContender = new DbContender
-                //     {
-                //         Name = contender.Name, Rating = contender.Rating,
-                //         SequenceNumber = contenderNumber, TryId = i + 1
-                //     };
-                //     _context.DbContenders.Add(dbContender);
-                //     Console.WriteLine("Modified");
-                //     contenderNumber++;
-                // }
-                // _context.SaveChanges();
+        double averageHappiness = 0;
+        for (var i = 0; i < triesCount; i++)
+        {
+            _contenderRepository.SaveContenders(_hall.Contenders, i + 1);
+            _fileWriter.WriteContendersNamesToFile(_hall.ContendersNames);
+            var chosenContender = ChooseContender();
+            WriteHappinessToFile(chosenContender);
+            averageHappiness += GetHappiness(chosenContender);
 
-                ContenderSaver.SaveContenders(_context, _hall.Contenders, i + 1);
-                _fileWriter.WriteContendersNamesToFile(_hall.ContendersNames);
-                Contender? chosenContender = ChooseContender();
-                WriteHappinessToFile(chosenContender);
-                averageHappiness += GetHappiness(chosenContender);
+            _hall.FillContenders();
+            _strategy.Reset();
+        }
 
-                _hall.FillContenders();
-                _strategy.Reset();
-            }
-
-
-            Console.WriteLine("Saving changes");
-            //_context.SaveChanges();
-            Console.WriteLine("Changes saved");
-
-            averageHappiness /= triesCount;
-            Console.WriteLine($"Average happiness {averageHappiness}");
+        averageHappiness /= triesCount;
+        Console.WriteLine($"Average happiness {averageHappiness}");
     }
     
     public Task StartAsync(CancellationToken cancellationToken)

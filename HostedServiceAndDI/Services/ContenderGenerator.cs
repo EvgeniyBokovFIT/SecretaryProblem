@@ -1,6 +1,6 @@
 ﻿using HostedServiceAndDI.Configuration;
 using SecretaryProblem.Data;
-using Contender = HostedServiceAndDI.Entity.Contender;
+using Contender = HostedServiceAndDI.Entities.Contender;
 
 namespace HostedServiceAndDI.Service;
 
