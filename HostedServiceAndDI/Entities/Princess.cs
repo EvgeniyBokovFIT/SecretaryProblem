@@ -88,28 +88,20 @@ public class Princess : IHostedService
     {
         _fileWriter.WriteContendersNamesToFile(_hall.ContendersNames);
         Contender? chosenContender = ChooseContender();
-        Console.WriteLine("Choosen contender: " + chosenContender);
-        Console.WriteLine(GetHappiness(chosenContender));
+        Console.WriteLine($"Chosen contender: {chosenContender}");
+        Console.WriteLine($"Happiness {GetHappiness(chosenContender)}");
         WriteHappinessToFile(chosenContender);
     }
 
     private void DoSeveralTries(int triesCount)
     {
         double averageHappiness = 0;
+        _contenderRepository.ClearOldContenders();
         for (var i = 0; i < triesCount; i++)
         {
-            var enumerableContenders =
-                _hall.Contenders
-                    .AsEnumerable();
-            var dbContenders = new List<DbContender>();
-            int contenderNumber = 0;
-            foreach (var contender in enumerableContenders)
-            {
-                dbContenders.Add(ContenderMapper.
-                    MapContenderToDbContender(contender, contenderNumber, i + 1));
-            }
-            
-            _contenderRepository.SaveContenders(dbContenders, i + 1);
+            var enumerableContenders = _hall.Contenders.AsEnumerable();
+
+            _contenderRepository.SaveContenders(enumerableContenders, i + 1);
             _fileWriter.WriteContendersNamesToFile(_hall.ContendersNames);
             var chosenContender = ChooseContender();
             WriteHappinessToFile(chosenContender);
@@ -127,34 +119,41 @@ public class Princess : IHostedService
 
     private void SimulateProcessOfChoosingByTryNumber(int tryNumber)
     {
-        IEnumerable<Contender> contenders = _contenderRepository.GetDbContendersByTryId(tryNumber)
-            .Select(ContenderMapper.MapDbContenderToContender);
-        Console.WriteLine("LLLLLLLLL");
-        Console.WriteLine();
+        IEnumerable<Contender> contenders = _contenderRepository.GetContendersByTryId(tryNumber);
+        _strategy.Reset();
+        _hall.Contenders.Clear();
         _hall.Contenders = new Queue<Contender>(contenders);
-        Console.WriteLine(_hall.Contenders.Count);
         DoOneTry();
+    }
+
+    private void DoWork()
+    {
+        Console.WriteLine("Enter \"Generate\" to generate 100 tries");
+        Console.WriteLine("Enter number of attempt from (1 to 100) to simulate princess behaviour on this attempt");
+
+        while (true)
+        {
+            string input = Console.ReadLine() ?? "Generate";
+            if (input.Equals("Generate"))
+            {
+                DoSeveralTries(100);
+            }
+            else
+            {
+                int tryNumber = Int32.Parse(input);
+                SimulateProcessOfChoosingByTryNumber(tryNumber);
+            }
+        }
     }
     
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        Console.WriteLine("Princess StartAsync");
-        Console.WriteLine("Enter \"Generate\" to generate 100 tries");
-        Console.WriteLine("Enter number of attempt from (1 to 100) to simulate princess behaviour on this attempt");
-        string input = Console.ReadLine() ?? "Generate";
-        if (input.Equals("Generate"))
-        {
-            Task.Run(() => DoSeveralTries(100));
-            return Task.CompletedTask;
-        }
-        int tryNumber = Int32.Parse(input);
-        Task.Run(() => SimulateProcessOfChoosingByTryNumber(tryNumber));
+        Task.Run(DoWork);
         return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        Console.WriteLine("Princess StopAsync");
         return Task.CompletedTask;
     }
 }

@@ -1,8 +1,7 @@
 ﻿using HostedServiceAndDI.Configuration;
 using SecretaryProblem.Data;
-using Contender = HostedServiceAndDI.Entities.Contender;
 
-namespace HostedServiceAndDI.Service;
+namespace HostedServiceAndDI.Services;
 
 public class ContenderGenerator
 {
@@ -12,15 +11,16 @@ public class ContenderGenerator
     public ContenderGenerator()
     {
         var configManager = ConfigProvider.GetConfig();
-        _contendersSize = int.Parse(configManager["ContendersCount"] ?? throw new Exception("Setting not found"));
+        _contendersSize = int.Parse(configManager["ContendersCount"] ?? 
+                                    throw new Exception("Setting not found"));
     }
 
     private List<string> GenerateNames()
     {
         string[] firstNames =
         {
-            "Иван", "Федор", "Михаил", "Петр", "Евгений", "Александр", "Илья", "Андрей", "Дмитрий", "Амадей", "Роман",
-            "Никита", "Егор", "Марк"
+            "Иван", "Федор", "Михаил", "Петр", "Евгений", "Александр", "Илья", 
+            "Андрей", "Дмитрий", "Амадей", "Роман", "Никита", "Егор", "Марк"
         };
         string[] patronymics =
         {
@@ -58,7 +58,6 @@ public class ContenderGenerator
             var ratingsCurIndex = _random.Next(ratings.Count);
             var rating = ratings[ratingsCurIndex];
             ratings.RemoveAt(ratingsCurIndex);
-            //Console.WriteLine($"{names[i]} {rating} {i}");
             contenders.Add(new Contender(names[i], rating));
         }
 

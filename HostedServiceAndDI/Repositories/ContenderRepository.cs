@@ -1,5 +1,4 @@
-﻿using HostedServiceAndDI.Entities;
-using SecretaryProblem.Data;
+﻿using SecretaryProblem.Data;
 
 namespace HostedServiceAndDI.Repositories;
 
@@ -10,14 +9,15 @@ public class ContenderRepository
     public ContenderRepository(EnvironmentContext context)
     {
         _context = context;
+        _context.Database.EnsureDeleted();
     }
-    public void SaveContenders(IEnumerable<DbContender> contenders, int tryNumber)
+    public void SaveContenders(IEnumerable<Contender> contenders, int tryNumber)
     {
         _context.Database.EnsureCreated();
         int contenderNumber = 1;
         foreach (var contender in contenders)
         {
-            var dbContender = new DbContender
+            var dbContender = new Contender
             {
                 Name = contender.Name, Rating = contender.Rating,
                 SequenceNumber = contenderNumber, TryId = tryNumber
@@ -29,10 +29,13 @@ public class ContenderRepository
         _context.SaveChanges();
     }
 
-    public List<DbContender> GetDbContendersByTryId(int tryId)
+    public List<Contender> GetContendersByTryId(int tryId)
     {
-        Console.WriteLine(tryId);
-        Console.WriteLine(_context.DbContenders.Count(c => c.TryId == tryId));
         return _context.DbContenders.Where(c => c.TryId == tryId).ToList();
+    }
+
+    public void ClearOldContenders()
+    {
+        _context.Database.EnsureDeleted();
     }
 }

@@ -1,4 +1,4 @@
-﻿using HostedServiceAndDI.Service;
+﻿using HostedServiceAndDI.Services;
 using NUnit.Framework;
 
 namespace HostedServiceAndDI.Tests;

@@ -1,4 +1,5 @@
 ﻿using HostedServiceAndDI.Entities;
+using SecretaryProblem.Data;
 
 namespace HostedServiceAndDI.Strategies;
 

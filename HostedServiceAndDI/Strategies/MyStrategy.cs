@@ -1,5 +1,6 @@
 ﻿using HostedServiceAndDI.Configuration;
 using HostedServiceAndDI.Entities;
+using SecretaryProblem.Data;
 
 namespace HostedServiceAndDI.Strategies;
 
@@ -47,7 +48,7 @@ public class MyStrategy: IPrincessBehaviour
     {
         var oldBest = _bestContender;
         _bestContender = _friend.Compare(_bestContender, contender);
-        if (_bestContender != oldBest && _iterationsWithoutChanges > 7)
+        if (_bestContender != oldBest && _iterationsWithoutChanges > 30)
         {
             return true;
         }
@@ -66,7 +67,7 @@ public class MyStrategy: IPrincessBehaviour
     {
         var oldBest = _bestContender;
         _bestContender = _friend.Compare(_bestContender, contender);
-        if (_friend.ViewedContenders.Count == _contendersCount)
+        if (_friend.ViewedContenders.Count == 100)
         {
             if (IsContenderGivePoints(contender))
             {
@@ -75,11 +76,40 @@ public class MyStrategy: IPrincessBehaviour
 
             return false;
         }
-        if(_bestContender != oldBest)
+        if (_bestContender != oldBest && _iterationsWithoutChanges > 15)
         {
             return true;
         }
-        return false;
+        if (oldBest == _bestContender)
+        {
+            _iterationsWithoutChanges++;
+        }
+        else
+        {
+            _iterationsWithoutChanges = 0;
+        }
+        
+        return ContenderIsBetterThanFewPrevious(30);
+    }
+
+    private bool ContenderIsBetterThanFewPrevious(int numOfContenders)
+    {
+        int viewedContendersCount = _friend.ViewedContenders.Count;
+        if (viewedContendersCount <= numOfContenders)
+        {
+            return false;
+        }
+        Contender contender = _friend.ViewedContenders[viewedContendersCount - 1];
+        for (int i = 0; i < numOfContenders; i++)
+        {
+            if (//i <= viewedContendersCount - 2 &&
+                contender != _friend.Compare(contender, _friend.ViewedContenders[viewedContendersCount - 2 - i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
     
     private bool IsContenderGivePoints(Contender contender)

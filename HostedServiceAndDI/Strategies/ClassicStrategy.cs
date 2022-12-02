@@ -1,5 +1,6 @@
 ﻿using HostedServiceAndDI.Configuration;
 using HostedServiceAndDI.Entities;
+using SecretaryProblem.Data;
 
 namespace HostedServiceAndDI.Strategies;
 

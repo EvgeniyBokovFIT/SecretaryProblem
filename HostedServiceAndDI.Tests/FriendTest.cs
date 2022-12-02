@@ -1,6 +1,7 @@
 ﻿using HostedServiceAndDI.Entities;
 using HostedServiceAndDI.Exceptions;
 using NUnit.Framework;
+using SecretaryProblem.Data;
 
 namespace HostedServiceAndDI.Tests;
 

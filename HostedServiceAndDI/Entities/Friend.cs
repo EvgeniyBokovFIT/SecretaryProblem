@@ -1,4 +1,5 @@
 ﻿using HostedServiceAndDI.Exceptions;
+using SecretaryProblem.Data;
 
 namespace HostedServiceAndDI.Entities;
 

@@ -5,9 +5,9 @@ namespace HostedServiceAndDI.Utils;
 
 public static class ContenderMapper
 {
-    public static DbContender MapContenderToDbContender(Contender contender, int contenderNumber, int tryNumber)
+    public static Contender MapContenderToDbContender(Contender contender, int contenderNumber, int tryNumber)
     {
-        var dbContender = new DbContender
+        var dbContender = new Contender
         {
             Name = contender.Name, 
             Rating = contender.Rating,
@@ -17,8 +17,8 @@ public static class ContenderMapper
         return dbContender;
     }
 
-    public static Contender MapDbContenderToContender(DbContender dbContender)
+    public static Contender MapDbContenderToContender(Contender contender)
     {
-        return new Contender(dbContender.Name, dbContender.Rating);
+        return new Contender(contender.Name, contender.Rating);
     }
 }
