@@ -16,7 +16,9 @@ public class Princess : IHostedService
     
     private readonly IPrincessBehaviour _strategy;
 
-    private readonly int _contendersCount;
+    private readonly int _contendersCount = Config.GetContendersCount();
+    
+    private readonly int _attemptsCount = Config.GetAttemptsCount();
 
     private readonly ContenderRepository _contenderRepository;
 
@@ -25,7 +27,6 @@ public class Princess : IHostedService
         _hall = hall;
         _fileWriter = fileWriter;
         _strategy = behaviour;
-        _contendersCount = int.Parse(ConfigProvider.GetConfig()["ContendersCount"] ?? throw new Exception());
         _contenderRepository = contenderRepository;
     }
     
@@ -84,20 +85,22 @@ public class Princess : IHostedService
         _fileWriter.WriteHappinessToFile(happiness);
     }
 
-    private void DoOneTry()
+    private int SimulatePrincessBehaviour()
     {
         _fileWriter.WriteContendersNamesToFile(_hall.ContendersNames);
         Contender? chosenContender = ChooseContender();
         Console.WriteLine($"Chosen contender: {chosenContender}");
-        Console.WriteLine($"Happiness {GetHappiness(chosenContender)}");
+        int happiness = GetHappiness(chosenContender);
+        Console.WriteLine($"Happiness {happiness}");
         WriteHappinessToFile(chosenContender);
+        return happiness;
     }
 
-    private void DoSeveralTries(int triesCount)
+    private void GenerateAttempts(int attemptsCount)
     {
         double averageHappiness = 0;
         _contenderRepository.ClearOldContenders();
-        for (var i = 0; i < triesCount; i++)
+        for (var i = 0; i < attemptsCount; i++)
         {
             var enumerableContenders = _hall.Contenders.AsEnumerable();
 
@@ -113,39 +116,69 @@ public class Princess : IHostedService
             _strategy.Reset();
         }
 
-        averageHappiness /= triesCount;
+        averageHappiness /= attemptsCount;
         Console.WriteLine($"Average happiness {averageHappiness}");
     }
 
-    private void SimulateProcessOfChoosingByTryNumber(int tryNumber)
+    private int SimulateProcessOfChoosingByTryNumber(int tryNumber)
     {
         IEnumerable<Contender> contenders = _contenderRepository.GetContendersByTryId(tryNumber);
         _strategy.Reset();
         _hall.Contenders.Clear();
         _hall.Contenders = new Queue<Contender>(contenders);
-        DoOneTry();
+        return SimulatePrincessBehaviour();
+    }
+
+    private double GetAverageHappiness()
+    {
+        double averageHappiness = 0;
+        for (int i = 0; i < _attemptsCount; i++)
+        {
+            averageHappiness += SimulateProcessOfChoosingByTryNumber(i + 1);
+        }
+
+        return averageHappiness / _attemptsCount;
     }
 
     private void DoWork()
     {
-        Console.WriteLine("Enter \"Generate\" to generate 100 tries");
-        Console.WriteLine("Enter number of attempt from (1 to 100) to simulate princess behaviour on this attempt");
+        WriteUsage();
 
         while (true)
         {
-            string input = Console.ReadLine() ?? "Generate";
-            if (input.Equals("Generate"))
+            string input = Console.ReadLine() ?? "generate";
+            if (input.Equals("generate"))
             {
-                DoSeveralTries(100);
+                GenerateAttempts(_attemptsCount);
+                continue;
             }
-            else
+            if(input.Equals("avg"))
             {
-                int tryNumber = Int32.Parse(input);
-                SimulateProcessOfChoosingByTryNumber(tryNumber);
+                var averageHappiness = GetAverageHappiness();
+                Console.WriteLine($"Average happiness: {averageHappiness}");
+                continue;
             }
+            if(Int32.TryParse(input, out var attemptNumber))
+            {
+                SimulateProcessOfChoosingByTryNumber(attemptNumber);
+                continue;
+            }
+
+            Console.WriteLine("Bad input");
+            WriteUsage();
+            
         }
     }
-    
+
+    private void WriteUsage()
+    {
+        Console.WriteLine($"Enter \"generate\" to generate {_attemptsCount} attempts");
+        
+        Console.WriteLine("Enter \"avg\" to get average value of happiness");
+        
+        Console.WriteLine($"Enter number of attempt from (1 to {_attemptsCount}) " +
+                          "to simulate princess behaviour on this attempt");
+    }
     public Task StartAsync(CancellationToken cancellationToken)
     {
         Task.Run(DoWork);
