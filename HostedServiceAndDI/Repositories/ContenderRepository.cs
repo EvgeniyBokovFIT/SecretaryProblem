@@ -1,4 +1,5 @@
-﻿using SecretaryProblem.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SecretaryProblem.Data;
 
 namespace HostedServiceAndDI.Repositories;
 
@@ -9,7 +10,6 @@ public class ContenderRepository
     public ContenderRepository(EnvironmentContext context)
     {
         _context = context;
-        _context.Database.EnsureDeleted();
     }
     public void SaveContenders(IEnumerable<Contender> contenders, int tryNumber)
     {
@@ -17,12 +17,9 @@ public class ContenderRepository
         int contenderNumber = 1;
         foreach (var contender in contenders)
         {
-            var dbContender = new Contender
-            {
-                Name = contender.Name, Rating = contender.Rating,
-                SequenceNumber = contenderNumber, TryId = tryNumber
-            };
-            _context.DbContenders.Add(dbContender);
+            contender.SequenceNumber = contenderNumber;
+            contender.TryId = tryNumber;
+            _context.DbContenders.Add(contender);
             contenderNumber++;
         }
 
@@ -37,5 +34,6 @@ public class ContenderRepository
     public void ClearOldContenders()
     {
         _context.Database.EnsureDeleted();
+        _context.Database.EnsureCreated();
     }
 }

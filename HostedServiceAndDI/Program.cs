@@ -12,8 +12,8 @@ IHost host = Host.CreateDefaultBuilder(args)
     {
         services
             .AddHostedService<Princess>()
-            .AddSingleton<ContenderRepository>()
-            .AddSingleton<EnvironmentContext>()
+            .AddScoped<ContenderRepository>()
+            .AddDbContext<EnvironmentContext>()
             .AddScoped<Hall>()
             .AddScoped<Friend>()
             .AddScoped<ContenderGenerator>()

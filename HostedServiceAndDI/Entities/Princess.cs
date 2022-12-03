@@ -2,7 +2,6 @@
 using HostedServiceAndDI.Exceptions;
 using HostedServiceAndDI.Repositories;
 using HostedServiceAndDI.Strategies;
-using HostedServiceAndDI.Utils;
 using Microsoft.Extensions.Hosting;
 using SecretaryProblem.Data;
 
@@ -100,17 +99,18 @@ public class Princess : IHostedService
     {
         double averageHappiness = 0;
         _contenderRepository.ClearOldContenders();
+        _hall.FillContenders();
+        _strategy.Reset();
         for (var i = 0; i < attemptsCount; i++)
         {
             var enumerableContenders = _hall.Contenders.AsEnumerable();
-
             _contenderRepository.SaveContenders(enumerableContenders, i + 1);
             _fileWriter.WriteContendersNamesToFile(_hall.ContendersNames);
             var chosenContender = ChooseContender();
             WriteHappinessToFile(chosenContender);
             averageHappiness += GetHappiness(chosenContender);
-            Console.WriteLine("Choosen contender: " + chosenContender);
-            Console.WriteLine(GetHappiness(chosenContender));
+            Console.WriteLine($"Chosen contender: {chosenContender}");
+            Console.WriteLine($"Happiness: {GetHappiness(chosenContender)}");
 
             _hall.FillContenders();
             _strategy.Reset();
