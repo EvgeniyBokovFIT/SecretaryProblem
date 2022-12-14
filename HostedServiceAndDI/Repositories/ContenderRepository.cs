@@ -19,7 +19,7 @@ public class ContenderRepository
         {
             contender.SequenceNumber = contenderNumber;
             contender.TryId = tryNumber;
-            _context.DbContenders.Add(contender);
+            _context.Contenders.Add(contender);
             contenderNumber++;
         }
 
@@ -28,7 +28,7 @@ public class ContenderRepository
 
     public List<Contender> GetContendersByTryId(int tryId)
     {
-        return _context.DbContenders.Where(c => c.TryId == tryId).ToList();
+        return _context.Contenders.Where(c => c.TryId == tryId).ToList();
     }
 
     public void ClearOldContenders()

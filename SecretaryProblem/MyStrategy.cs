@@ -25,7 +25,7 @@ public class MyStrategy: IPrincessBehaviour
             _bestContender = contender;
             return false;
         }
-        if (_friend.ViewedContenders.Count < _contendersCount / 2.7)
+        if (_friend.ViewedContenders.Count < _contendersCount / 2)
         {
             return IsChosenContenderFromFirstPart(contender);
         }
@@ -37,11 +37,12 @@ public class MyStrategy: IPrincessBehaviour
     {
         var oldBest = _bestContender;
         _bestContender = _friend.Compare(_bestContender, contender);
-        if (_bestContender != oldBest && _iterationsWithoutChanges > 30)
-        {
-            Console.WriteLine("AAAAAA " + contender.Rating);
-            return true;
-        }
+        // if (_bestContender != oldBest && _iterationsWithoutChanges > 30)
+        // {
+        //     Console.WriteLine("AAAAAA " + contender.Rating);
+        //     return true;
+        // }
+        return ContenderIsBetterThanPrevious(30);
 
         if (oldBest == _bestContender)
         {
@@ -67,14 +68,8 @@ public class MyStrategy: IPrincessBehaviour
 
             return false;
         }
-        
-        var oldBest = _bestContender;
+
         _bestContender = _friend.Compare(_bestContender, contender);
-        // if (_bestContender != oldBest)
-        // {
-        //     Console.WriteLine("2AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa2 " + contender.Rating);
-        //     return true;
-        // }
 
         return ContenderIsBetterThanPrevious(Convert.ToInt32(_friend.ViewedContenders.Count * 0.95));
     }
@@ -82,23 +77,35 @@ public class MyStrategy: IPrincessBehaviour
     private bool ContenderIsBetterThanPrevious(int numOfContenders)
     {
         int viewedContendersCount = _friend.ViewedContenders.Count;
-        if (viewedContendersCount < 42)
-        {
-            return false;
-        }
+        
         Contender contender = _friend.ViewedContenders[viewedContendersCount - 1];
         var contenderBetterThan = _friend.ViewedContenders.Count(checkedContender =>
             contender != checkedContender && contender == _friend.Compare(contender, checkedContender));
         
+        // if (viewedContendersCount < 42)
+        // {
+        //     return false;
+        // }
+
         if (contenderBetterThan < viewedContendersCount - 5 || contenderBetterThan == viewedContendersCount - 2)
         {
             return false;
         }
         
+        if (contenderBetterThan is > 92 and < 95 && viewedContendersCount > 95 
+                                                 && contenderBetterThan != viewedContendersCount - 4
+                                                 && contenderBetterThan != viewedContendersCount - 2)
+        {
+            Console.WriteLine("IS 95 OR 97_______________________________________________________" + 
+                              contenderBetterThan + " " + viewedContendersCount + " " + contender.Rating);
+            return true;
+        }
+
         if (viewedContendersCount < 60 && contenderBetterThan < viewedContendersCount - 2)
         {
             return false;
         }
+        
         
         if (viewedContendersCount < 80 && (contenderBetterThan < viewedContendersCount - 3 
                                            || contenderBetterThan == viewedContendersCount - 1))
@@ -106,9 +113,13 @@ public class MyStrategy: IPrincessBehaviour
             return false;
         }
 
+        if (viewedContendersCount >= 95 && contenderBetterThan == viewedContendersCount - 4)
+        {
+            return false;
+        }
+
         if (contenderBetterThan >= numOfContenders)
         {
-            
             Console.WriteLine("FEWFEWFEWFEWFEW " + contender.Rating + " BETTER THAN " + contenderBetterThan + 
                               " COUNT " + viewedContendersCount);
             return true;

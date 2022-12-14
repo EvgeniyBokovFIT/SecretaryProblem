@@ -4,14 +4,13 @@ namespace SecretaryProblem.Data;
 
 public class EnvironmentContext: DbContext
 {
-    public DbSet<Contender> DbContenders { get; set; }
+    public DbSet<Contender> Contenders { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var connectionString =
-            @"Server=localhost;Database=SecretaryProblem;
+        const string connectionString = @"Server=localhost;Database=SecretaryProblem;
             User Id=postgres;Password=password";
-        
+
         optionsBuilder.UseNpgsql(connectionString);
     }
 
