@@ -2,9 +2,10 @@ using HostedServiceAndDI.Configuration;
 using HostedServiceAndDI.Entities;
 using HostedServiceAndDI.Exceptions;
 using HostedServiceAndDI.Repositories;
+using HostedServiceAndDI.Services;
 using HostedServiceAndDI.Strategies;
-using NUnit.Framework;
 using Moq;
+using NUnit.Framework;
 using SecretaryProblem.Data;
 
 namespace HostedServiceAndDI.Tests;

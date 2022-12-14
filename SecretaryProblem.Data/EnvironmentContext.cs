@@ -4,14 +4,26 @@ namespace SecretaryProblem.Data;
 
 public class EnvironmentContext: DbContext
 {
+    public EnvironmentContext()
+    {
+        
+    }
+    
+    public EnvironmentContext(DbContextOptions<EnvironmentContext> options)
+        :base(options)
+    {
+    }
     public DbSet<Contender> Contenders { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        const string connectionString = @"Server=localhost;Database=SecretaryProblem;
+        if (!optionsBuilder.IsConfigured)
+        {
+            const string connectionString = @"Server=localhost;Database=SecretaryProblem;
             User Id=postgres;Password=password";
 
-        optionsBuilder.UseNpgsql(connectionString);
+            optionsBuilder.UseNpgsql(connectionString);
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

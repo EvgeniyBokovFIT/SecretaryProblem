@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SecretaryProblem.Data;
+﻿using SecretaryProblem.Data;
 
 namespace HostedServiceAndDI.Repositories;
 

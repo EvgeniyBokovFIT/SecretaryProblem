@@ -1,6 +1,7 @@
 ﻿using HostedServiceAndDI.Configuration;
 using HostedServiceAndDI.Exceptions;
 using HostedServiceAndDI.Repositories;
+using HostedServiceAndDI.Services;
 using HostedServiceAndDI.Strategies;
 using Microsoft.Extensions.Hosting;
 using SecretaryProblem.Data;
@@ -95,7 +96,7 @@ public class Princess : IHostedService
         return happiness;
     }
 
-    private void GenerateAttempts(int attemptsCount)
+    public void GenerateAttempts(int attemptsCount)
     {
         double averageHappiness = 0;
         _contenderRepository.ClearOldContenders();
@@ -120,11 +121,11 @@ public class Princess : IHostedService
         Console.WriteLine($"Average happiness {averageHappiness}");
     }
 
-    private int SimulateProcessOfChoosingByTryNumber(int tryNumber)
+    public int SimulateProcessOfChoosingByTryNumber(int tryNumber)
     {
         IEnumerable<Contender> contenders = _contenderRepository.GetContendersByTryId(tryNumber);
         _strategy.Reset();
-        _hall.Contenders.Clear();
+        //_hall.Contenders.Clear();
         _hall.Contenders = new Queue<Contender>(contenders);
         return SimulatePrincessBehaviour();
     }
