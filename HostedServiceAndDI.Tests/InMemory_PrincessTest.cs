@@ -18,7 +18,7 @@ public class InMemory_PrincessTest
 
     private ContenderRepository _repository;
 
-    private EnvironmentContext _context;
+    private readonly EnvironmentContext _context;
 
     public InMemory_PrincessTest()
     {
