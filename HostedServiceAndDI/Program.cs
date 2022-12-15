@@ -1,10 +1,9 @@
-﻿using HostedServiceAndDI;
-using HostedServiceAndDI.Entities;
+﻿using HostedServiceAndDI.Entities;
 using HostedServiceAndDI.Repositories;
 using HostedServiceAndDI.Services;
 using HostedServiceAndDI.Strategies;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using SecretaryProblem.Data;
 
 IHost host = Host.CreateDefaultBuilder(args)

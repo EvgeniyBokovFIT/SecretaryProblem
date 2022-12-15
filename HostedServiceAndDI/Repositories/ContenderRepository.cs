@@ -34,5 +34,7 @@ public class ContenderRepository
     {
         _context.Database.EnsureDeleted();
         _context.Database.EnsureCreated();
+        
+        _context.ChangeTracker.Clear();
     }
 }
