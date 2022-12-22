@@ -8,13 +8,13 @@ public class MyStrategy: IPrincessBehaviour
 
     private readonly int _contendersCount;
 
-    private Contender _bestContender;
+   // private Contender _bestContender;
 
     public MyStrategy(Friend friend)
     {
         _friend = friend;
         _contendersCount = 100;
-        _bestContender = new Contender("", 0);
+        //_bestContender = new Contender("", 0);
     }
     
     public bool IsChosenContender(Contender contender)
@@ -22,7 +22,7 @@ public class MyStrategy: IPrincessBehaviour
         _friend.ViewedContenders.Add(contender);
         if (_friend.ViewedContenders.Count == 1)
         {
-            _bestContender = contender;
+            //_bestContender = contender;
             return false;
         }
         if (_friend.ViewedContenders.Count < _contendersCount / 2)
@@ -35,8 +35,8 @@ public class MyStrategy: IPrincessBehaviour
 
     private bool IsChosenContenderFromFirstPart(Contender contender)
     {
-        var oldBest = _bestContender;
-        _bestContender = _friend.Compare(_bestContender, contender);
+        //var oldBest = _bestContender;
+        //_bestContender = _friend.Compare(_bestContender, contender);
         // if (_bestContender != oldBest && _iterationsWithoutChanges > 30)
         // {
         //     Console.WriteLine("AAAAAA " + contender.Rating);
@@ -44,16 +44,16 @@ public class MyStrategy: IPrincessBehaviour
         // }
         return ContenderIsBetterThanPrevious(30);
 
-        if (oldBest == _bestContender)
-        {
-            _iterationsWithoutChanges++;
-        }
-        else
-        {
-            _iterationsWithoutChanges = 0;
-        }
-
-        return false;
+        // if (oldBest == _bestContender)
+        // {
+        //     _iterationsWithoutChanges++;
+        // }
+        // else
+        // {
+        //     _iterationsWithoutChanges = 0;
+        // }
+        //
+        // return false;
     }
 
     private bool IsChosenContenderFromLastPart(Contender contender)
@@ -69,7 +69,7 @@ public class MyStrategy: IPrincessBehaviour
             return false;
         }
 
-        _bestContender = _friend.Compare(_bestContender, contender);
+        //_bestContender = _friend.Compare(_bestContender, contender);
 
         return ContenderIsBetterThanPrevious(Convert.ToInt32(_friend.ViewedContenders.Count * 0.95));
     }

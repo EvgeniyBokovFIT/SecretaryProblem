@@ -6,11 +6,16 @@ namespace HostedServiceAndDI.Entities;
 
 public class Hall
 {
-    public Hall() {}
+    public Hall()
+    {
+        Contenders = new Queue<Contender>();
+    }
     
     public Queue<Contender> Contenders;
 
     private readonly ContenderGenerator? _generator;
+
+    public Contender LastViewedContender;
 
     public List<string>? ContendersNames { get; private set; }
 
@@ -38,6 +43,7 @@ public class Hall
         }
 
         var contender = Contenders.Dequeue();
+        LastViewedContender = contender;
         return contender;
     }
 

@@ -1,3 +1,7 @@
+using HostedServiceAndDI.Entities;
+using HostedServiceAndDI.Repositories;
+using SecretaryProblem.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +11,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<EnvironmentContext>();
+builder.Services.AddSingleton<Hall>();
+builder.Services.AddSingleton<Friend>();
+builder.Services.AddScoped<ContenderRepository>();
+
+
 var app = builder.Build();
+app.UseCors(b => b.AllowAnyOrigin());
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -18,7 +29,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 app.MapControllers();
 

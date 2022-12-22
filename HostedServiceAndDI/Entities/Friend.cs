@@ -14,7 +14,7 @@ public class Friend
 
     public Contender Compare(in Contender first, in Contender second)
     {
-        if (!ViewedContenders.Contains(first) || !ViewedContenders.Contains(second))
+        if (first is null || second is null || !ViewedContenders.Contains(first) || !ViewedContenders.Contains(second))
         {
             throw new UnviewedContenderException("Contender was not viewed");
         }
