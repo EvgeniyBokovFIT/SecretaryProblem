@@ -15,17 +15,25 @@ public class PrincessClient
     
     private HttpClient _httpClient = new();
 
+    private JsonSerializerOptions _options;
+
     public PrincessClient(StrategyClient strategy)
     {
         _strategy = strategy;
+        _httpClient.BaseAddress = new Uri("https://localhost:7194/hall/");
+        _options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+        };
     }
 
     public double DoSeveralTries()
     {
         double avg = 0;
         
-        for (int i = 1; i <= _attemptsCount; i++)
+        for (int i = 1; i <= 1; i++)
         {
+            _strategy.Reset();
             avg += SimulatePrincessBehaviourOnCurrentTry(i);
         }
 
@@ -37,7 +45,7 @@ public class PrincessClient
     private int SimulatePrincessBehaviourOnCurrentTry(int tryId)
     {
         ContenderDto? chosenContender = ChooseContender(tryId);
-        Console.WriteLine($"Chosen contender: {chosenContender}");
+        Console.WriteLine($"Chosen contender: {chosenContender.Name}");
         
         int happiness = GetHappiness(GetRating(tryId).Result.Rank);
         Console.WriteLine($"Happiness {happiness}");
@@ -68,32 +76,34 @@ public class PrincessClient
 
     private async Task<ContenderDto?> GetNextContender(int tryId)
     {
-        _httpClient.BaseAddress = new Uri($"https://localhost:7194/hall/{tryId}/next");
-        var response = await _httpClient.PostAsync("", null);
+        var response = await _httpClient.PostAsync($"{tryId}/next", null);
+        Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+
         using (var stream = await response.Content.ReadAsStreamAsync())
         {
+            
             var contender = await JsonSerializer
-                .DeserializeAsync<ContenderDto>(stream);
+                .DeserializeAsync<ContenderDto>(stream, _options);
+            Console.WriteLine($"_{contender.Name}_");
             return contender;
         } 
     }
 
     private async Task<RatingDto?> GetRating(int tryId)
     {
-        _httpClient.BaseAddress = new Uri($"https://localhost:7194/hall/{tryId}/select");
-        var response = await _httpClient.PostAsync("", null);
+        var response = await _httpClient.PostAsync($"{tryId}/select", null);
         using (var stream = await response.Content.ReadAsStreamAsync())
         {
             var ratingDto = await JsonSerializer
-                .DeserializeAsync<RatingDto>(stream);
+                .DeserializeAsync<RatingDto>(stream, _options);
+            Console.WriteLine("CHOSEN RATING " + ratingDto.Rank);
             return ratingDto;
         }
     }
 
     private async Task Reset()
     {
-        _httpClient.BaseAddress = new Uri("https://localhost:7194/hall/reset");
-        await _httpClient.PostAsync("", null);
+        await _httpClient.PostAsync("reset", null);
     }
 
     private int GetHappiness(int? rating)

@@ -23,10 +23,14 @@ public class FriendController
             var contender1 = _friend
                 .ViewedContenders
                 .First(c => c.TryId == tryId && c.Name == names.Name1);
+            Console.WriteLine("COMPARE 1 " + contender1);
             var contender2 = _friend
                 .ViewedContenders
                 .First(c => c.TryId == tryId && c.Name == names.Name2);
+            Console.WriteLine("COMPARE 2 " + contender2);
+
             var bestContender = _friend.Compare(contender1, contender2);
+            Console.WriteLine("BEST FROM COMPARING " + bestContender);
             return new ContenderDto
             {
                 Name = bestContender.Name

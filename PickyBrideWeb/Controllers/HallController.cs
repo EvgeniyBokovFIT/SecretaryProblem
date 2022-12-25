@@ -33,10 +33,12 @@ public class HallController
     [HttpPost("{tryId}/next")]
     public ContenderDto? NextContender(int tryId, string? session)
     {
+        Console.WriteLine("NEXT");
         if (_hall.Contenders.Count == 0)
         {
             if (_checkedAttempts.Contains(tryId))
             {
+                Console.WriteLine("NOTHING");
                 return new ContenderDto
                 {
                     Name = null
@@ -48,6 +50,7 @@ public class HallController
         }
         var contender = _hall.GetNextContender();
         _friend.ViewedContenders.Add(contender);
+        Console.WriteLine(contender.Name);
         return new ContenderDto
         {
             Name = contender.Name

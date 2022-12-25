@@ -22,6 +22,8 @@ public class StrategyClient
             Name = null
         };
         ViewedContenders = new List<ContenderDto>();
+        _httpClient.BaseAddress = new Uri($"https://localhost:7194/freind/");
+
     }
 
     public void Reset()
@@ -60,19 +62,23 @@ public class StrategyClient
 
     private async Task<ContenderDto> Compare(ContenderDto contender1, ContenderDto contender2, int tryId)
     {
-        _httpClient.BaseAddress = new Uri($"https://localhost:7194/freind/{tryId}/compare");
         var compareDto = new CompareDto
         {
             Name1 = contender1.Name,
             Name2 = contender2.Name
         };
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+        };
         var content = new StringContent(
-            JsonSerializer.Serialize(compareDto), Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync("", content);
+            JsonSerializer.Serialize(compareDto, options), Encoding.UTF8, "application/json");
+        var response = await _httpClient.PostAsync($"{tryId}/compare", content);
         using (var stream = await response.Content.ReadAsStreamAsync())
         {
+            
             var bestContender = await JsonSerializer
-                .DeserializeAsync<ContenderDto>(stream);
+                .DeserializeAsync<ContenderDto>(stream, options);
             return bestContender;
         } 
 
@@ -101,7 +107,7 @@ public class StrategyClient
         
         ContenderDto contender = ViewedContenders[viewedContendersCount - 1];
         var contenderBetterThan = ViewedContenders.Count(checkedContender =>
-            contender != checkedContender && contender == Compare(contender, checkedContender, tryId).Result);
+            contender.Name == Compare(contender, checkedContender, tryId).Result.Name) - 1;
         
         // if (viewedContendersCount < 42)
         // {
@@ -148,8 +154,8 @@ public class StrategyClient
     private bool IsContenderGivePoints(ContenderDto contender, int tryId)
     {
         var lastContenderBetterThan = ViewedContenders.Count(checkedContender =>
-            contender != checkedContender && contender == Compare(contender, checkedContender, tryId).Result);
-        var lastContenderRating = lastContenderBetterThan + 1;
+            contender.Name == Compare(contender, checkedContender, tryId).Result.Name);
+        var lastContenderRating = lastContenderBetterThan;
         if (lastContenderRating is 100 or 98 or 96)
         {
             return true;

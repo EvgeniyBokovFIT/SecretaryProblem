@@ -23,6 +23,8 @@ public class ContenderRepository
         }
 
         _context.SaveChanges();
+        _context.ChangeTracker.Clear();
+
     }
 
     public List<Contender> GetContendersByTryId(int tryId)
