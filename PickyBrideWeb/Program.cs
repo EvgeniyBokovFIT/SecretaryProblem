@@ -16,6 +16,7 @@ builder.Services.AddSingleton<Hall>();
 builder.Services.AddSingleton<Friend>();
 builder.Services.AddScoped<ContenderRepository>();
 
+//builder.Services.AddMassTransit()
 
 var app = builder.Build();
 app.UseCors(b => b.AllowAnyOrigin());

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "F9Y+WhdQdUOOS3zG/mwpEdUf55Rq57KmOZ0R7nZ0YSxMasyU/d7eZa1IlIR8Ns3v2tDc6VEMm4qSCF5EC9A5qQ==",
+  "dgSpecHash": "7ZrVGgcbqF8Py39zsKw7hiByTIfcf/ZHmCP+Eq0CqhRIEO7t62PwSE9HEk6Cc5a00OoU+qr0R7CzPRCS0cJlbg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Evgeniy\\RiderProjects\\SecretaryProblem\\PrincessHttpClient\\PrincessHttpClient.csproj",
   "expectedPackageFiles": [
@@ -40,11 +40,7 @@
     "C:\\Users\\Evgeniy\\.nuget\\packages\\system.diagnostics.eventlog\\7.0.0-rc.2.22472.3\\system.diagnostics.eventlog.7.0.0-rc.2.22472.3.nupkg.sha512",
     "C:\\Users\\Evgeniy\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\Evgeniy\\.nuget\\packages\\system.text.encodings.web\\7.0.0-rc.2.22472.3\\system.text.encodings.web.7.0.0-rc.2.22472.3.nupkg.sha512",
-    "C:\\Users\\Evgeniy\\.nuget\\packages\\system.text.json\\7.0.0-rc.2.22472.3\\system.text.json.7.0.0-rc.2.22472.3.nupkg.sha512",
-    "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.12\\microsoft.netcore.app.ref.6.0.12.nupkg.sha512",
-    "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.12\\microsoft.windowsdesktop.app.ref.6.0.12.nupkg.sha512",
-    "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.12\\microsoft.aspnetcore.app.ref.6.0.12.nupkg.sha512",
-    "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.12\\microsoft.netcore.app.host.win-x64.6.0.12.nupkg.sha512"
+    "C:\\Users\\Evgeniy\\.nuget\\packages\\system.text.json\\7.0.0-rc.2.22472.3\\system.text.json.7.0.0-rc.2.22472.3.nupkg.sha512"
   ],
   "logs": []
 }

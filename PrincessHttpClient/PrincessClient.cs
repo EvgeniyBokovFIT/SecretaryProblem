@@ -31,7 +31,7 @@ public class PrincessClient
     {
         double avg = 0;
         
-        for (int i = 1; i <= 1; i++)
+        for (int i = 1; i <= 10; i++)
         {
             _strategy.Reset();
             avg += SimulatePrincessBehaviourOnCurrentTry(i);
@@ -44,7 +44,8 @@ public class PrincessClient
     
     private int SimulatePrincessBehaviourOnCurrentTry(int tryId)
     {
-        ContenderDto? chosenContender = ChooseContender(tryId);
+        ContenderDto chosenContender = ChooseContender(tryId);
+
         Console.WriteLine($"Chosen contender: {chosenContender.Name}");
         
         int happiness = GetHappiness(GetRating(tryId).Result.Rank);
@@ -52,15 +53,18 @@ public class PrincessClient
         return happiness;
     }
     
-    public ContenderDto? ChooseContender(int tryId)
+    public ContenderDto ChooseContender(int tryId)
     {
         try
         {
-            for (int i = 0; i < _contendersCount; i++)
+            for (int i = 0; i <= _contendersCount; i++)
             {
                 var contender = GetNextContender(tryId).Result;
+                //Console.WriteLine(contender.Name + " SEQ NUM " + i);
                 if (_strategy.IsChosenContender(contender, tryId))
                 {
+                    //Console.WriteLine("FROM CHOOSE CONT");
+                    //Console.WriteLine(contender.Name);
                     return contender;
                 }
             }
@@ -68,28 +72,34 @@ public class PrincessClient
         }
         catch(EmptyHallException)
         {
-            return null;
+            return new ContenderDto
+            {
+                Name = null
+            };
         }
 
-        return null;
+        return new ContenderDto
+        {
+            Name = null
+        };
     }
 
     private async Task<ContenderDto?> GetNextContender(int tryId)
     {
         var response = await _httpClient.PostAsync($"{tryId}/next", null);
-        Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+        //Console.WriteLine(response.Content.ReadAsStringAsync().Result);
 
         using (var stream = await response.Content.ReadAsStreamAsync())
         {
             
             var contender = await JsonSerializer
                 .DeserializeAsync<ContenderDto>(stream, _options);
-            Console.WriteLine($"_{contender.Name}_");
+            //Console.WriteLine($"_{contender.Name}_");
             return contender;
         } 
     }
 
-    private async Task<RatingDto?> GetRating(int tryId)
+    private async Task<RatingDto> GetRating(int tryId)
     {
         var response = await _httpClient.PostAsync($"{tryId}/select", null);
         using (var stream = await response.Content.ReadAsStreamAsync())

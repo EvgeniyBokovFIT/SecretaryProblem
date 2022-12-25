@@ -2,5 +2,5 @@
 
 public class RatingDto
 {
-    public int Rank { get; set; }
+    public int? Rank { get; set; }
 }

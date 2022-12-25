@@ -97,7 +97,7 @@ public class StrategyClient
         }
 
         _bestContender = Compare(_bestContender, contender, tryId).Result;
-
+        
         return ContenderIsBetterThanPrevious(Convert.ToInt32(ViewedContenders.Count * 0.95), tryId);
     }
 
@@ -123,6 +123,7 @@ public class StrategyClient
                                                  && contenderBetterThan != viewedContendersCount - 4
                                                  && contenderBetterThan != viewedContendersCount - 2)
         {
+            Console.WriteLine("1");
             return true;
         }
 
@@ -145,6 +146,9 @@ public class StrategyClient
 
         if (contenderBetterThan >= numOfContenders)
         {
+            Console.WriteLine("CONT BETTER THAN " + contenderBetterThan);
+            Console.WriteLine("NUM OF CONT " + numOfContenders);
+            Console.WriteLine("2");
             return true;
         }
 

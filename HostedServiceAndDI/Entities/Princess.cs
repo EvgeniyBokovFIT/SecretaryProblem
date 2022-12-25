@@ -123,7 +123,7 @@ public class Princess : IHostedService
 
     public int SimulateProcessOfChoosingByTryNumber(int tryNumber)
     {
-        IEnumerable<Contender> contenders = _contenderRepository.GetContendersByTryId(tryNumber);
+        IEnumerable<Contender> contenders = _contenderRepository.GetContendersByTryId(tryNumber).Result;
         _strategy.Reset();
         //_hall.Contenders.Clear();
         _hall.Contenders = new Queue<Contender>(contenders);

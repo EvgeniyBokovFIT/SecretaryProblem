@@ -14,7 +14,7 @@ public class HallController
     private readonly ContenderRepository _contenderRepository;
     private readonly Friend _friend;
 
-    private List<int> _checkedAttempts = new();
+    private static List<int> _checkedAttempts = new();
 
     public HallController(Hall hall, ContenderRepository contenderRepository, Friend friend)
     {
@@ -31,13 +31,14 @@ public class HallController
     }
 
     [HttpPost("{tryId}/next")]
-    public ContenderDto? NextContender(int tryId, string? session)
+    public async Task<ContenderDto> NextContender(int tryId, string? session)
     {
-        Console.WriteLine("NEXT");
+        //Console.WriteLine("NEXT");
         if (_hall.Contenders.Count == 0)
         {
             if (_checkedAttempts.Contains(tryId))
             {
+                _hall.LastViewedContender = null;
                 Console.WriteLine("NOTHING");
                 return new ContenderDto
                 {
@@ -45,12 +46,22 @@ public class HallController
                 };
             }
             _checkedAttempts.Add(tryId);
-            IEnumerable<Contender> contenders = _contenderRepository.GetContendersByTryId(tryId);
+            
+            IEnumerable<Contender> contenders = await _contenderRepository.GetContendersByTryId(tryId);
             _hall.Contenders = new Queue<Contender>(contenders);
         }
+
+        // if (_hall.Contenders.Count == 0)
+        // {
+        //     return new ContenderDto
+        //     {
+        //         Name = null
+        //     };
+        // }
+        
         var contender = _hall.GetNextContender();
         _friend.ViewedContenders.Add(contender);
-        Console.WriteLine(contender.Name);
+        //Console.WriteLine(contender.Name);
         return new ContenderDto
         {
             Name = contender.Name
@@ -60,6 +71,18 @@ public class HallController
     [HttpPost("{tryId}/select")]
     public RatingDto GetRating(int tryId, string? session)
     {
+        _hall.Contenders.Clear();
+        if (_hall.LastViewedContender is null)
+        {
+            return new RatingDto
+            {
+                Rank = null
+            };
+        }
+
+        Console.WriteLine("SELECT");
+        Console.WriteLine(_hall.LastViewedContender.Name + " " + _hall.LastViewedContender.TryId);
+
         return new RatingDto
         {
             Rank = _hall.LastViewedContender.Rating

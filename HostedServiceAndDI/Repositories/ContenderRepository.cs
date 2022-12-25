@@ -1,4 +1,5 @@
-﻿using SecretaryProblem.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SecretaryProblem.Data;
 
 namespace HostedServiceAndDI.Repositories;
 
@@ -27,9 +28,9 @@ public class ContenderRepository
 
     }
 
-    public List<Contender> GetContendersByTryId(int tryId)
+    public Task<List<Contender>> GetContendersByTryId(int tryId)
     {
-        return _context.Contenders.Where(c => c.TryId == tryId).ToList();
+        return _context.Contenders.Where(c => c.TryId == tryId).ToListAsync();
     }
 
     public void ClearOldContenders()

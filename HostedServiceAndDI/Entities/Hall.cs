@@ -15,7 +15,7 @@ public class Hall
 
     private readonly ContenderGenerator? _generator;
 
-    public Contender LastViewedContender;
+    public Contender? LastViewedContender;
 
     public List<string>? ContendersNames { get; private set; }
 
@@ -39,6 +39,7 @@ public class Hall
     {
         if (ContendersCount == 0)
         {
+            LastViewedContender = null;
             throw new EmptyHallException("Hall is empty");
         }
 
