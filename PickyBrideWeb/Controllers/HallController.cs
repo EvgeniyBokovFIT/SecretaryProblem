@@ -49,6 +49,7 @@ public class HallController
                     {
                         Name = null
                     });
+                return;
                 // return new ContenderDto
                 // {
                 //     Name = null

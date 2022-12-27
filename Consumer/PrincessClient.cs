@@ -18,13 +18,12 @@ public class PrincessClient : IConsumer<ContenderDto>
 
     private static int _tryId = 1;
 
-    private static int avg = 0;
+    private static int avg;
 
-    private static int i = 0;
+    private static int i;
 
     public PrincessClient()
     {
-
         if (_strategy is null)
         {
             _strategy = new StrategyClient();
@@ -35,8 +34,6 @@ public class PrincessClient : IConsumer<ContenderDto>
             PropertyNameCaseInsensitive = true,
         };
 
-        //Reset();
-        //GetNextContender(1);
     }
 
     private async Task GetNextContender(int tryId)
@@ -92,8 +89,9 @@ public class PrincessClient : IConsumer<ContenderDto>
     {
         var contender = context.Message;
         i++;
-        Console.WriteLine(contender.Name + " " + _tryId);
-        if (_strategy.IsChosenContender(contender, _tryId))
+        Console.WriteLine(contender.Name + " " + _tryId + " " + i);
+        
+        if (_strategy.IsChosenContender(contender, _tryId) || contender.Name is null)
         {
             //Console.WriteLine("FROM CHOOSE CONT");
             //Console.WriteLine(contender.Name);
@@ -103,6 +101,8 @@ public class PrincessClient : IConsumer<ContenderDto>
                 Console.WriteLine(avg/100.0);
             }
             _tryId++;
+            _strategy.Reset();
+            i = 0;
         }
 
         if (_tryId <= 100)
