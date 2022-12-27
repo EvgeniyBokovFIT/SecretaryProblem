@@ -1,7 +1,6 @@
-﻿using MassTransit;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Consumer;
+using MassTransit;
 using Microsoft.Extensions.Hosting;
-using PrincessHttpClient;
 
 await Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
@@ -20,8 +19,7 @@ await Host.CreateDefaultBuilder(args)
                 );
             });
         });
-        services.AddHostedService<PrincessClient>();
+        //services.AddMassTransitHostedService();
     })
     .Build()
     .RunAsync();
-

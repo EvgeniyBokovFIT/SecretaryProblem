@@ -1,6 +1,7 @@
 ﻿using DataContracts;
 using HostedServiceAndDI.Entities;
 using HostedServiceAndDI.Repositories;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using SecretaryProblem.Data;
 
@@ -16,11 +17,14 @@ public class HallController
 
     private static List<int> _checkedAttempts = new();
 
-    public HallController(Hall hall, ContenderRepository contenderRepository, Friend friend)
+    private IBus _bus;
+
+    public HallController(Hall hall, ContenderRepository contenderRepository, Friend friend, IBus bus)
     {
         _hall = hall;
         _contenderRepository = contenderRepository;
         _friend = friend;
+        _bus = bus;
     }
     
     [HttpPost("reset")]
@@ -31,7 +35,7 @@ public class HallController
     }
 
     [HttpPost("{tryId}/next")]
-    public async Task<ContenderDto> NextContender(int tryId, string? session)
+    public async Task NextContender(int tryId, string? session)
     {
         //Console.WriteLine("NEXT");
         if (_hall.Contenders.Count == 0)
@@ -40,10 +44,15 @@ public class HallController
             {
                 _hall.LastViewedContender = null;
                 Console.WriteLine("NOTHING");
-                return new ContenderDto
-                {
-                    Name = null
-                };
+                _bus.Publish(
+                    new ContenderDto
+                    {
+                        Name = null
+                    });
+                // return new ContenderDto
+                // {
+                //     Name = null
+                // };
             }
             _checkedAttempts.Add(tryId);
             
@@ -51,21 +60,24 @@ public class HallController
             _hall.Contenders = new Queue<Contender>(contenders);
         }
 
-        // if (_hall.Contenders.Count == 0)
-        // {
-        //     return new ContenderDto
-        //     {
-        //         Name = null
-        //     };
-        // }
         
         var contender = _hall.GetNextContender();
+        if (contender is null)
+        {
+            Console.WriteLine("IS NULL");
+        }
         _friend.ViewedContenders.Add(contender);
-        //Console.WriteLine(contender.Name);
-        return new ContenderDto
+        Console.WriteLine(contender.Name);
+
+        await _bus.Publish(new ContenderDto
         {
             Name = contender.Name
-        };
+        });
+        //Console.WriteLine(contender.Name);
+        // return new ContenderDto
+        // {
+        //     Name = contender.Name
+        // };
     }
 
     [HttpPost("{tryId}/select")]

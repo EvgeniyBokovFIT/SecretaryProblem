@@ -10,14 +10,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DataContracts\DataContracts.csproj" />
-      <ProjectReference Include="..\HostedServiceAndDI\HostedServiceAndDI.csproj" />
-      <ProjectReference Include="..\SecretaryProblem\SecretaryProblem.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="MassTransit" Version="8.0.10-develop.730" />
-      <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
       <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.10-develop.730" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
     </ItemGroup>
 
 </Project>

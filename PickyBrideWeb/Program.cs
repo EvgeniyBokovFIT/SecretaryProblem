@@ -1,5 +1,6 @@
 using HostedServiceAndDI.Entities;
 using HostedServiceAndDI.Repositories;
+using MassTransit;
 using SecretaryProblem.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +17,18 @@ builder.Services.AddSingleton<Hall>();
 builder.Services.AddSingleton<Friend>();
 builder.Services.AddScoped<ContenderRepository>();
 
-//builder.Services.AddMassTransit()
+builder.Services.AddMassTransit(x =>
+    {
+        x.UsingRabbitMq((context, cfg) =>
+        {
+            cfg.Host("localhost", "/", h =>
+            {
+                h.Username("guest");
+                h.Password("guest");
+            });
+            cfg.ConfigureEndpoints(context);
+        });
+    });
 
 var app = builder.Build();
 app.UseCors(b => b.AllowAnyOrigin());

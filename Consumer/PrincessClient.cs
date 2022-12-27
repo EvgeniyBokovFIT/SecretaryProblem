@@ -1,18 +1,16 @@
 ﻿using System.Text.Json;
 using DataContracts;
-using HostedServiceAndDI.Configuration;
 using MassTransit;
-using Microsoft.Extensions.Hosting;
 
-namespace PrincessHttpClient;
+namespace Consumer;
 
-public class PrincessClient : IConsumer<ContenderDto>, IHostedService
+public class PrincessClient : IConsumer<ContenderDto>
 {
-    private StrategyClient _strategy;
+    private static StrategyClient? _strategy;
     
-    private readonly int _contendersCount = Config.GetContendersCount();
+    private readonly int _contendersCount = 100;
     
-    private readonly int _attemptsCount = Config.GetAttemptsCount();
+    private readonly int _attemptsCount = 100;
     
     private HttpClient _httpClient = new();
 
@@ -22,20 +20,23 @@ public class PrincessClient : IConsumer<ContenderDto>, IHostedService
 
     private static int avg = 0;
 
+    private static int i = 0;
+
     public PrincessClient()
     {
-        Console.WriteLine("PRINCESS CLIENT CONSTRUCTOR");
 
-        _strategy = new StrategyClient();
+        if (_strategy is null)
+        {
+            _strategy = new StrategyClient();
+        }
         _httpClient.BaseAddress = new Uri("https://localhost:7194/hall/");
         _options = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
         };
-        Console.WriteLine("PRINCESS CLIENT CONSTRUCTOR");
 
         //Reset();
-        GetNextContender(1);
+        //GetNextContender(1);
     }
 
     private async Task GetNextContender(int tryId)
@@ -90,6 +91,8 @@ public class PrincessClient : IConsumer<ContenderDto>, IHostedService
     public Task Consume(ConsumeContext<ContenderDto> context)
     {
         var contender = context.Message;
+        i++;
+        Console.WriteLine(contender.Name + " " + _tryId);
         if (_strategy.IsChosenContender(contender, _tryId))
         {
             //Console.WriteLine("FROM CHOOSE CONT");
@@ -109,14 +112,5 @@ public class PrincessClient : IConsumer<ContenderDto>, IHostedService
         
         return Task.CompletedTask;
     }
-
-    public Task StartAsync(CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
-    }
+    
 }

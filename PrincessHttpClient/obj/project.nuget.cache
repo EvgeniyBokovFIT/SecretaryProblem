@@ -1,9 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "7ZrVGgcbqF8Py39zsKw7hiByTIfcf/ZHmCP+Eq0CqhRIEO7t62PwSE9HEk6Cc5a00OoU+qr0R7CzPRCS0cJlbg==",
+  "dgSpecHash": "YA+f1j6CIOMDmyw0PKT/o+bfqV8adx8Cg7WgAWuYG1T8MqPes04owAi81aR9fmgFXodmpLq0VmVVpXzDj/lneA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Evgeniy\\RiderProjects\\SecretaryProblem\\PrincessHttpClient\\PrincessHttpClient.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Evgeniy\\.nuget\\packages\\masstransit\\8.0.10-develop.730\\masstransit.8.0.10-develop.730.nupkg.sha512",
+    "C:\\Users\\Evgeniy\\.nuget\\packages\\masstransit.abstractions\\8.0.10-develop.730\\masstransit.abstractions.8.0.10-develop.730.nupkg.sha512",
+    "C:\\Users\\Evgeniy\\.nuget\\packages\\masstransit.aspnetcore\\7.3.1\\masstransit.aspnetcore.7.3.1.nupkg.sha512",
+    "C:\\Users\\Evgeniy\\.nuget\\packages\\masstransit.extensions.dependencyinjection\\7.3.1\\masstransit.extensions.dependencyinjection.7.3.1.nupkg.sha512",
+    "C:\\Users\\Evgeniy\\.nuget\\packages\\masstransit.rabbitmq\\8.0.10-develop.730\\masstransit.rabbitmq.8.0.10-develop.730.nupkg.sha512",
     "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.0\\microsoft.entityframeworkcore.7.0.0.nupkg.sha512",
     "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.0\\microsoft.entityframeworkcore.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.0\\microsoft.entityframeworkcore.analyzers.7.0.0.nupkg.sha512",
@@ -20,6 +25,8 @@
     "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.extensions.configuration.usersecrets\\7.0.0-rc.2.22472.3\\microsoft.extensions.configuration.usersecrets.7.0.0-rc.2.22472.3.nupkg.sha512",
     "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\7.0.0\\microsoft.extensions.dependencyinjection.7.0.0.nupkg.sha512",
     "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0\\microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",
+    "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.extensions.diagnostics.healthchecks\\3.1.18\\microsoft.extensions.diagnostics.healthchecks.3.1.18.nupkg.sha512",
+    "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.extensions.diagnostics.healthchecks.abstractions\\3.1.18\\microsoft.extensions.diagnostics.healthchecks.abstractions.3.1.18.nupkg.sha512",
     "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\7.0.0-rc.2.22472.3\\microsoft.extensions.fileproviders.abstractions.7.0.0-rc.2.22472.3.nupkg.sha512",
     "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.extensions.fileproviders.physical\\7.0.0-rc.2.22472.3\\microsoft.extensions.fileproviders.physical.7.0.0-rc.2.22472.3.nupkg.sha512",
     "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.extensions.filesystemglobbing\\7.0.0-rc.2.22472.3\\microsoft.extensions.filesystemglobbing.7.0.0-rc.2.22472.3.nupkg.sha512",
@@ -37,10 +44,16 @@
     "C:\\Users\\Evgeniy\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512",
     "C:\\Users\\Evgeniy\\.nuget\\packages\\npgsql\\7.0.0\\npgsql.7.0.0.nupkg.sha512",
     "C:\\Users\\Evgeniy\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\7.0.0\\npgsql.entityframeworkcore.postgresql.7.0.0.nupkg.sha512",
+    "C:\\Users\\Evgeniy\\.nuget\\packages\\rabbitmq.client\\6.4.0\\rabbitmq.client.6.4.0.nupkg.sha512",
+    "C:\\Users\\Evgeniy\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.0\\system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",
     "C:\\Users\\Evgeniy\\.nuget\\packages\\system.diagnostics.eventlog\\7.0.0-rc.2.22472.3\\system.diagnostics.eventlog.7.0.0-rc.2.22472.3.nupkg.sha512",
+    "C:\\Users\\Evgeniy\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
+    "C:\\Users\\Evgeniy\\.nuget\\packages\\system.reflection.emit\\4.7.0\\system.reflection.emit.4.7.0.nupkg.sha512",
+    "C:\\Users\\Evgeniy\\.nuget\\packages\\system.reflection.emit.lightweight\\4.7.0\\system.reflection.emit.lightweight.4.7.0.nupkg.sha512",
     "C:\\Users\\Evgeniy\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\Evgeniy\\.nuget\\packages\\system.text.encodings.web\\7.0.0-rc.2.22472.3\\system.text.encodings.web.7.0.0-rc.2.22472.3.nupkg.sha512",
-    "C:\\Users\\Evgeniy\\.nuget\\packages\\system.text.json\\7.0.0-rc.2.22472.3\\system.text.json.7.0.0-rc.2.22472.3.nupkg.sha512"
+    "C:\\Users\\Evgeniy\\.nuget\\packages\\system.text.json\\7.0.0-rc.2.22472.3\\system.text.json.7.0.0-rc.2.22472.3.nupkg.sha512",
+    "C:\\Users\\Evgeniy\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512"
   ],
   "logs": []
 }
