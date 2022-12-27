@@ -1,4 +1,4 @@
-﻿namespace DataContracts;
+﻿namespace Nsu.PeakyBride.DataContracts;
 
 public class RatingDto
 {

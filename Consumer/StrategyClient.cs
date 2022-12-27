@@ -1,21 +1,23 @@
 ﻿using System.Text;
 using System.Text.Json;
-using DataContracts;
+using Nsu.PeakyBride.DataContracts;
 
 namespace Consumer;
 
 public class StrategyClient
 {
     private readonly int _contendersCount = 100;
-    
-    private static ContenderDto _bestContender = new ContenderDto
+
+    private List<Contender> _fivePrevious = new List<Contender>();
+
+    private static Contender _bestContender = new Contender
     {
         Name = null
     };
 
     private HttpClient _httpClient = new();
 
-    public static List<ContenderDto> ViewedContenders { get; set; } = new List<ContenderDto>();
+    public static List<Contender> ViewedContenders { get; set; } = new List<Contender>();
 
     public StrategyClient()
     {
@@ -27,14 +29,47 @@ public class StrategyClient
 
     public void Reset()
     {
-        _bestContender = new ContenderDto
+        _bestContender = new Contender
         {
             Name = null
         };
         ViewedContenders.Clear();
     }
     
-    public bool IsChosenContender(ContenderDto contender, int tryId)
+    
+    public bool IsChosenContenderFastStrategy(Contender contender, int tryId)
+    {
+        if (_fivePrevious.Count < 5)
+        {
+            _fivePrevious.Add(contender);
+            return false;
+        }
+
+        bool betterThanAll = true;
+        foreach (var prevContender in _fivePrevious)
+        {
+            if (!contender.Name.Equals(Compare(contender, prevContender, tryId).Result.Name))
+            {
+                betterThanAll = false;
+                break;
+            }
+        }
+
+        if (betterThanAll)
+        {
+            return true;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            _fivePrevious[i] = _fivePrevious[i + 1];
+        }
+
+        _fivePrevious[4] = contender;
+        return false;
+    }
+    
+    public bool IsChosenContender(Contender contender, int tryId)
     {
         ViewedContenders.Add(contender);
         if (ViewedContenders.Count == 1)
@@ -50,7 +85,7 @@ public class StrategyClient
         return IsChosenContenderFromLastPart(contender, tryId);
     }
 
-    private bool IsChosenContenderFromFirstPart(ContenderDto contender, int tryId)
+    private bool IsChosenContenderFromFirstPart(Contender contender, int tryId)
     {
         var oldBest = _bestContender;
         _bestContender = Compare(_bestContender, contender, tryId).Result;
@@ -59,7 +94,7 @@ public class StrategyClient
 
     }
 
-    private async Task<ContenderDto> Compare(ContenderDto contender1, ContenderDto contender2, int tryId)
+    private async Task<Contender> Compare(Contender contender1, Contender contender2, int tryId)
     {
         var compareDto = new CompareDto
         {
@@ -77,13 +112,13 @@ public class StrategyClient
         {
             
             var bestContender = await JsonSerializer
-                .DeserializeAsync<ContenderDto>(stream, options);
+                .DeserializeAsync<Contender>(stream, options);
             return bestContender;
         } 
 
     }
 
-    private bool IsChosenContenderFromLastPart(ContenderDto contender, int tryId)
+    private bool IsChosenContenderFromLastPart(Contender contender, int tryId)
     {
         if (ViewedContenders.Count == _contendersCount)
         {
@@ -104,14 +139,16 @@ public class StrategyClient
     {
         int viewedContendersCount = ViewedContenders.Count;
         
-        ContenderDto contender = ViewedContenders[viewedContendersCount - 1];
+        if (viewedContendersCount < 50)
+        {
+            return false;
+        }
+        
+        Contender contender = ViewedContenders[viewedContendersCount - 1];
         var contenderBetterThan = ViewedContenders.Count(checkedContender =>
             contender.Name == Compare(contender, checkedContender, tryId).Result.Name) - 1;
         
-        // if (viewedContendersCount < 42)
-        // {
-        //     return false;
-        // }
+        
 
         if (contenderBetterThan < viewedContendersCount - 5 || contenderBetterThan == viewedContendersCount - 2)
         {
@@ -154,7 +191,7 @@ public class StrategyClient
         return false;
     }
     
-    private bool IsContenderGivePoints(ContenderDto contender, int tryId)
+    private bool IsContenderGivePoints(Contender contender, int tryId)
     {
         var lastContenderBetterThan = ViewedContenders.Count(checkedContender =>
             contender.Name == Compare(contender, checkedContender, tryId).Result.Name);

@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
-using DataContracts;
 using HostedServiceAndDI.Configuration;
+using Nsu.PeakyBride.DataContracts;
 
 namespace PrincessHttpClient;
 
@@ -9,33 +9,33 @@ public class StrategyClient
 {
     private readonly int _contendersCount = Config.GetContendersCount();
     
-    private ContenderDto _bestContender;
+    private Contender _bestContender;
 
     private HttpClient _httpClient = new();
 
-    public List<ContenderDto> ViewedContenders { get; set; }
+    public List<Contender> ViewedContenders { get; set; }
 
     public StrategyClient()
     {
-        _bestContender = new ContenderDto
+        _bestContender = new Contender
         {
             Name = null
         };
-        ViewedContenders = new List<ContenderDto>();
+        ViewedContenders = new List<Contender>();
         _httpClient.BaseAddress = new Uri("https://nsupeakybrideapi20221215134314.azurewebsites.net/api/freind/");
 
     }
 
     public void Reset()
     {
-        _bestContender = new ContenderDto
+        _bestContender = new Contender
         {
             Name = null
         };
         ViewedContenders.Clear();
     }
     
-    public bool IsChosenContender(ContenderDto contender, int tryId)
+    public bool IsChosenContender(Contender contender, int tryId)
     {
         ViewedContenders.Add(contender);
         if (ViewedContenders.Count == 1)
@@ -51,7 +51,7 @@ public class StrategyClient
         return IsChosenContenderFromLastPart(contender, tryId);
     }
 
-    private bool IsChosenContenderFromFirstPart(ContenderDto contender, int tryId)
+    private bool IsChosenContenderFromFirstPart(Contender contender, int tryId)
     {
         var oldBest = _bestContender;
         _bestContender = Compare(_bestContender, contender, tryId).Result;
@@ -60,7 +60,7 @@ public class StrategyClient
 
     }
 
-    private async Task<ContenderDto> Compare(ContenderDto contender1, ContenderDto contender2, int tryId)
+    private async Task<Contender> Compare(Contender contender1, Contender contender2, int tryId)
     {
         var compareDto = new CompareDto
         {
@@ -78,13 +78,13 @@ public class StrategyClient
         {
             
             var bestContender = await JsonSerializer
-                .DeserializeAsync<ContenderDto>(stream, options);
+                .DeserializeAsync<Contender>(stream, options);
             return bestContender;
         } 
 
     }
 
-    private bool IsChosenContenderFromLastPart(ContenderDto contender, int tryId)
+    private bool IsChosenContenderFromLastPart(Contender contender, int tryId)
     {
         if (ViewedContenders.Count == _contendersCount)
         {
@@ -105,7 +105,7 @@ public class StrategyClient
     {
         int viewedContendersCount = ViewedContenders.Count;
         
-        ContenderDto contender = ViewedContenders[viewedContendersCount - 1];
+        Contender contender = ViewedContenders[viewedContendersCount - 1];
         var contenderBetterThan = ViewedContenders.Count(checkedContender =>
             contender.Name == Compare(contender, checkedContender, tryId).Result.Name) - 1;
         
@@ -155,7 +155,7 @@ public class StrategyClient
         return false;
     }
     
-    private bool IsContenderGivePoints(ContenderDto contender, int tryId)
+    private bool IsContenderGivePoints(Contender contender, int tryId)
     {
         var lastContenderBetterThan = ViewedContenders.Count(checkedContender =>
             contender.Name == Compare(contender, checkedContender, tryId).Result.Name);

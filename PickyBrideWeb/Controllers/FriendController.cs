@@ -1,6 +1,6 @@
-﻿using DataContracts;
-using HostedServiceAndDI.Entities;
+﻿using HostedServiceAndDI.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Nsu.PeakyBride.DataContracts;
 
 namespace PickyBrideWeb.Controllers;
 
@@ -16,7 +16,7 @@ public class FriendController
     }
     
     [HttpPost("{tryId}/compare")]
-    public ContenderDto Compare(int tryId, string? session, [FromBody] CompareDto names)
+    public Contender Compare(int tryId, string? session, [FromBody] CompareDto names)
     {
         try
         {
@@ -31,14 +31,14 @@ public class FriendController
 
             var bestContender = _friend.Compare(contender1, contender2);
             //Console.WriteLine("BEST FROM COMPARING " + bestContender);
-            return new ContenderDto
+            return new Contender
             {
                 Name = bestContender.Name
             };
         }
         catch (Exception)
         {
-            return new ContenderDto
+            return new Contender
             {
                 Name = null
             };

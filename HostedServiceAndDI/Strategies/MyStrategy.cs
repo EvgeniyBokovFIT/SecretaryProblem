@@ -91,12 +91,13 @@ public class MyStrategy: IPrincessBehaviour
         Contender contender = _friend.ViewedContenders[viewedContendersCount - 1];
         var contenderBetterThan = _friend.ViewedContenders.Count(checkedContender =>
             contender != checkedContender && contender == _friend.Compare(contender, checkedContender));
-        
-        // if (viewedContendersCount < 42)
-        // {
-        //     return false;
-        // }
 
+
+        if (viewedContendersCount < 70)
+        {
+            return false;
+        }
+        
         if (contenderBetterThan < viewedContendersCount - 5 || contenderBetterThan == viewedContendersCount - 2)
         {
             return false;

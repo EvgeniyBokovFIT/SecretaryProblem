@@ -1,9 +1,8 @@
-﻿using DataContracts;
-using HostedServiceAndDI.Entities;
+﻿using HostedServiceAndDI.Entities;
 using HostedServiceAndDI.Repositories;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
-using SecretaryProblem.Data;
+using Nsu.PeakyBride.DataContracts;
 
 namespace PickyBrideWeb.Controllers;
 
@@ -45,7 +44,7 @@ public class HallController
                 _hall.LastViewedContender = null;
                 Console.WriteLine("NOTHING");
                 _bus.Publish(
-                    new ContenderDto
+                    new Contender
                     {
                         Name = null
                     });
@@ -57,8 +56,8 @@ public class HallController
             }
             _checkedAttempts.Add(tryId);
             
-            IEnumerable<Contender> contenders = await _contenderRepository.GetContendersByTryId(tryId);
-            _hall.Contenders = new Queue<Contender>(contenders);
+            IEnumerable<SecretaryProblem.Data.Contender> contenders = await _contenderRepository.GetContendersByTryId(tryId);
+            _hall.Contenders = new Queue<SecretaryProblem.Data.Contender>(contenders);
         }
 
         
@@ -70,7 +69,7 @@ public class HallController
         _friend.ViewedContenders.Add(contender);
         Console.WriteLine(contender.Name);
 
-        await _bus.Publish(new ContenderDto
+        await _bus.Publish(new Contender
         {
             Name = contender.Name
         });

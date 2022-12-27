@@ -1,10 +1,10 @@
 ﻿using System.Text.Json;
-using DataContracts;
 using MassTransit;
+using Nsu.PeakyBride.DataContracts;
 
 namespace Consumer;
 
-public class PrincessClient : IConsumer<ContenderDto>
+public class PrincessClient : IConsumer<Contender>
 {
     private static StrategyClient? _strategy;
     
@@ -43,16 +43,9 @@ public class PrincessClient : IConsumer<ContenderDto>
         
     }
 
-    private async Task<RatingDto> SelectContender(int tryId)
+    private async Task SelectContender(int tryId)
     {
-        var response = await _httpClient.PostAsync($"{tryId}/select?sessionId=7re-qnd-5pu-hld", null);
-        using (var stream = await response.Content.ReadAsStreamAsync())
-        {
-            var ratingDto = await JsonSerializer
-                .DeserializeAsync<RatingDto>(stream, _options);
-            Console.WriteLine("CHOSEN RATING " + ratingDto.Rank);
-            return ratingDto;
-        }
+        await _httpClient.PostAsync($"{tryId}/select?sessionId=7re-qnd-5pu-hld", null);
     }
 
     private async Task Reset()
@@ -85,18 +78,18 @@ public class PrincessClient : IConsumer<ContenderDto>
         return 0;
     }
 
-    public Task Consume(ConsumeContext<ContenderDto> context)
+    public Task Consume(ConsumeContext<Contender> context)
     {
         Console.WriteLine("GOT MESSAGE");
         var contender = context.Message;
         i++;
         Console.WriteLine(contender.Name + " " + _tryId + " " + i);
         
-        if (_strategy.IsChosenContender(contender, _tryId) || contender.Name is null)
+        if (contender.Name is null || _strategy.IsChosenContender(contender, _tryId))
         {
             //Console.WriteLine("FROM CHOOSE CONT");
             //Console.WriteLine(contender.Name);
-            avg += GetHappiness(SelectContender(_tryId).Result.Rank);
+            SelectContender(_tryId);
             if (_tryId == 100)
             {
                 Console.WriteLine(avg/100.0);

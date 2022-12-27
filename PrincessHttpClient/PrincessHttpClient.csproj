@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DataContracts\DataContracts.csproj" />
+      <ProjectReference Include="..\Nsu.PeakyBride.DataContracts\Nsu.PeakyBride.DataContracts.csproj" />
       <ProjectReference Include="..\HostedServiceAndDI\HostedServiceAndDI.csproj" />
       <ProjectReference Include="..\SecretaryProblem\SecretaryProblem.csproj" />
     </ItemGroup>

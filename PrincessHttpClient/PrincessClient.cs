@@ -1,12 +1,12 @@
 ﻿using System.Text.Json;
-using DataContracts;
 using HostedServiceAndDI.Configuration;
 using MassTransit;
 using Microsoft.Extensions.Hosting;
+using Nsu.PeakyBride.DataContracts;
 
 namespace PrincessHttpClient;
 
-public class PrincessClient : IConsumer<ContenderDto>, IHostedService
+public class PrincessClient : IConsumer<Contender>, IHostedService
 {
     private StrategyClient _strategy;
     
@@ -87,7 +87,7 @@ public class PrincessClient : IConsumer<ContenderDto>, IHostedService
         return 0;
     }
 
-    public Task Consume(ConsumeContext<ContenderDto> context)
+    public Task Consume(ConsumeContext<Contender> context)
     {
         var contender = context.Message;
         if (_strategy.IsChosenContender(contender, _tryId))

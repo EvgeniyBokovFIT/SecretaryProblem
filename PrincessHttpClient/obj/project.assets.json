@@ -969,16 +969,6 @@
           "buildTransitive/netcoreapp3.1/_._": {}
         }
       },
-      "DataContracts/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "compile": {
-          "bin/placeholder/DataContracts.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/DataContracts.dll": {}
-        }
-      },
       "HostedServiceAndDI/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
@@ -992,6 +982,16 @@
         },
         "runtime": {
           "bin/placeholder/HostedServiceAndDI.dll": {}
+        }
+      },
+      "Nsu.PeakyBride.DataContracts/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/Nsu.PeakyBride.DataContracts.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Nsu.PeakyBride.DataContracts.dll": {}
         }
       },
       "SecretaryProblem/1.0.0": {
@@ -2396,15 +2396,15 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "DataContracts/1.0.0": {
-      "type": "project",
-      "path": "../DataContracts/DataContracts.csproj",
-      "msbuildProject": "../DataContracts/DataContracts.csproj"
-    },
     "HostedServiceAndDI/1.0.0": {
       "type": "project",
       "path": "../HostedServiceAndDI/HostedServiceAndDI.csproj",
       "msbuildProject": "../HostedServiceAndDI/HostedServiceAndDI.csproj"
+    },
+    "Nsu.PeakyBride.DataContracts/1.0.0": {
+      "type": "project",
+      "path": "../Nsu.PeakyBride.DataContracts/Nsu.PeakyBride.DataContracts.csproj",
+      "msbuildProject": "../Nsu.PeakyBride.DataContracts/Nsu.PeakyBride.DataContracts.csproj"
     },
     "SecretaryProblem/1.0.0": {
       "type": "project",
@@ -2419,11 +2419,11 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "DataContracts >= 1.0.0",
       "HostedServiceAndDI >= 1.0.0",
       "MassTransit >= 8.0.10-develop.730",
       "MassTransit.AspNetCore >= 7.3.1",
       "MassTransit.RabbitMQ >= 8.0.10-develop.730",
+      "Nsu.PeakyBride.DataContracts >= 1.0.0",
       "SecretaryProblem >= 1.0.0"
     ]
   },
@@ -2452,11 +2452,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Evgeniy\\RiderProjects\\SecretaryProblem\\DataContracts\\DataContracts.csproj": {
-              "projectPath": "C:\\Users\\Evgeniy\\RiderProjects\\SecretaryProblem\\DataContracts\\DataContracts.csproj"
-            },
             "C:\\Users\\Evgeniy\\RiderProjects\\SecretaryProblem\\HostedServiceAndDI\\HostedServiceAndDI.csproj": {
               "projectPath": "C:\\Users\\Evgeniy\\RiderProjects\\SecretaryProblem\\HostedServiceAndDI\\HostedServiceAndDI.csproj"
+            },
+            "C:\\Users\\Evgeniy\\RiderProjects\\SecretaryProblem\\Nsu.PeakyBride.DataContracts\\Nsu.PeakyBride.DataContracts.csproj": {
+              "projectPath": "C:\\Users\\Evgeniy\\RiderProjects\\SecretaryProblem\\Nsu.PeakyBride.DataContracts\\Nsu.PeakyBride.DataContracts.csproj"
             },
             "C:\\Users\\Evgeniy\\RiderProjects\\SecretaryProblem\\SecretaryProblem\\SecretaryProblem.csproj": {
               "projectPath": "C:\\Users\\Evgeniy\\RiderProjects\\SecretaryProblem\\SecretaryProblem\\SecretaryProblem.csproj"
