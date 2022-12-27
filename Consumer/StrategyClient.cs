@@ -21,7 +21,7 @@ public class StrategyClient
     {
         Console.WriteLine("STRAT CONST");
         
-        _httpClient.BaseAddress = new Uri($"https://localhost:7194/freind/");
+        _httpClient.BaseAddress = new Uri("https://nsupeakybrideapi20221215134314.azurewebsites.net/api/freind/");
 
     }
 
@@ -72,7 +72,7 @@ public class StrategyClient
         };
         var content = new StringContent(
             JsonSerializer.Serialize(compareDto, options), Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync($"{tryId}/compare", content);
+        var response = await _httpClient.PostAsync($"{tryId}/compare?session=7re-qnd-5pu-hld", content);
         using (var stream = await response.Content.ReadAsStreamAsync())
         {
             

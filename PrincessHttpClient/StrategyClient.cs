@@ -22,7 +22,7 @@ public class StrategyClient
             Name = null
         };
         ViewedContenders = new List<ContenderDto>();
-        _httpClient.BaseAddress = new Uri($"https://localhost:7194/freind/");
+        _httpClient.BaseAddress = new Uri("https://nsupeakybrideapi20221215134314.azurewebsites.net/api/freind/");
 
     }
 

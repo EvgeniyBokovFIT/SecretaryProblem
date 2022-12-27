@@ -28,7 +28,7 @@ public class PrincessClient : IConsumer<ContenderDto>
         {
             _strategy = new StrategyClient();
         }
-        _httpClient.BaseAddress = new Uri("https://localhost:7194/hall/");
+        _httpClient.BaseAddress = new Uri("https://nsupeakybrideapi20221215134314.azurewebsites.net/api/hall/");
         _options = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
@@ -38,14 +38,14 @@ public class PrincessClient : IConsumer<ContenderDto>
 
     private async Task GetNextContender(int tryId)
     {
-        var response = await _httpClient.PostAsync($"{tryId}/next", null);
+        var response = await _httpClient.PostAsync($"{tryId}/next?sessionId=7re-qnd-5pu-hld", null);
         //Console.WriteLine(response.Content.ReadAsStringAsync().Result);
         
     }
 
     private async Task<RatingDto> SelectContender(int tryId)
     {
-        var response = await _httpClient.PostAsync($"{tryId}/select", null);
+        var response = await _httpClient.PostAsync($"{tryId}/select?sessionId=7re-qnd-5pu-hld", null);
         using (var stream = await response.Content.ReadAsStreamAsync())
         {
             var ratingDto = await JsonSerializer
@@ -87,6 +87,7 @@ public class PrincessClient : IConsumer<ContenderDto>
 
     public Task Consume(ConsumeContext<ContenderDto> context)
     {
+        Console.WriteLine("GOT MESSAGE");
         var contender = context.Message;
         i++;
         Console.WriteLine(contender.Name + " " + _tryId + " " + i);
@@ -107,6 +108,7 @@ public class PrincessClient : IConsumer<ContenderDto>
 
         if (_tryId <= 100)
         {
+            Console.WriteLine("SENDING REQUEST");
             GetNextContender(_tryId);
         }
         
