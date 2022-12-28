@@ -1,4 +1,14 @@
-﻿using PrincessHttpClient;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using PrincessHttpClient;
 
-PrincessClient princessClient = new PrincessClient(new StrategyClient());
-princessClient.DoSeveralTries();
+IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices(services =>
+    {
+        services
+            .AddHostedService<PrincessClient>()
+            .AddSingleton<StrategyClient>();
+    })
+    .Build();
+
+host.Run();

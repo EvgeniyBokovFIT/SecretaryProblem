@@ -1,6 +1,6 @@
 ﻿using DataContracts;
-using HostedServiceAndDI.Entities;
 using Microsoft.AspNetCore.Mvc;
+using PickyBrideWeb.Services;
 
 namespace PickyBrideWeb.Controllers;
 
@@ -8,40 +8,16 @@ namespace PickyBrideWeb.Controllers;
 [Route("freind")]
 public class FriendController
 {
-    private readonly Friend _friend;
+    private readonly FriendService _friendService;
 
-    public FriendController(Friend friend)
+    public FriendController(FriendService friendService)
     {
-        _friend = friend;
+        _friendService = friendService;
     }
     
     [HttpPost("{tryId}/compare")]
     public ContenderDto Compare(int tryId, string? session, [FromBody] CompareDto names)
     {
-        try
-        {
-            var contender1 = _friend
-                .ViewedContenders
-                .First(c => c.TryId == tryId && c.Name == names.Name1);
-            //Console.WriteLine("COMPARE 1 " + contender1);
-            var contender2 = _friend
-                .ViewedContenders
-                .First(c => c.TryId == tryId && c.Name == names.Name2);
-            //Console.WriteLine("COMPARE 2 " + contender2);
-
-            var bestContender = _friend.Compare(contender1, contender2);
-            //Console.WriteLine("BEST FROM COMPARING " + bestContender);
-            return new ContenderDto
-            {
-                Name = bestContender.Name
-            };
-        }
-        catch (Exception)
-        {
-            return new ContenderDto
-            {
-                Name = null
-            };
-        }
+        return _friendService.Compare(tryId, session, names);
     }
 }

@@ -22,7 +22,7 @@ public class StrategyClient
             Name = null
         };
         ViewedContenders = new List<ContenderDto>();
-        _httpClient.BaseAddress = new Uri($"https://localhost:7194/freind/");
+        _httpClient.BaseAddress = new Uri("https://localhost:7194/freind/");
 
     }
 
@@ -57,7 +57,6 @@ public class StrategyClient
         _bestContender = Compare(_bestContender, contender, tryId).Result;
 
         return ContenderIsBetterThanPrevious(30, tryId);
-
     }
 
     private async Task<ContenderDto> Compare(ContenderDto contender1, ContenderDto contender2, int tryId)
@@ -107,12 +106,8 @@ public class StrategyClient
         
         ContenderDto contender = ViewedContenders[viewedContendersCount - 1];
         var contenderBetterThan = ViewedContenders.Count(checkedContender =>
-            contender.Name == Compare(contender, checkedContender, tryId).Result.Name) - 1;
-        
-        // if (viewedContendersCount < 42)
-        // {
-        //     return false;
-        // }
+            contender.Name != checkedContender.Name 
+                && contender.Name == Compare(contender, checkedContender, tryId).Result.Name);
 
         if (contenderBetterThan < viewedContendersCount - 5 || contenderBetterThan == viewedContendersCount - 2)
         {
@@ -123,7 +118,6 @@ public class StrategyClient
                                                  && contenderBetterThan != viewedContendersCount - 4
                                                  && contenderBetterThan != viewedContendersCount - 2)
         {
-            Console.WriteLine("1");
             return true;
         }
 
@@ -146,9 +140,6 @@ public class StrategyClient
 
         if (contenderBetterThan >= numOfContenders)
         {
-            Console.WriteLine("CONT BETTER THAN " + contenderBetterThan);
-            Console.WriteLine("NUM OF CONT " + numOfContenders);
-            Console.WriteLine("2");
             return true;
         }
 
@@ -158,8 +149,9 @@ public class StrategyClient
     private bool IsContenderGivePoints(ContenderDto contender, int tryId)
     {
         var lastContenderBetterThan = ViewedContenders.Count(checkedContender =>
-            contender.Name == Compare(contender, checkedContender, tryId).Result.Name);
-        var lastContenderRating = lastContenderBetterThan;
+            contender.Name != checkedContender.Name 
+                && contender.Name == Compare(contender, checkedContender, tryId).Result.Name);
+        var lastContenderRating = lastContenderBetterThan + 1;
         if (lastContenderRating is 100 or 98 or 96)
         {
             return true;

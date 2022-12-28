@@ -16,9 +16,8 @@ public class Friend
     {
         if (first is null || second is null || !ViewedContenders.Contains(first) || !ViewedContenders.Contains(second))
         {
-            throw new UnviewedContenderException("Contender was not viewed");
+            throw new UnviewedContenderException("Один из женихов не был у принцессы");
         }
         return first.Rating > second.Rating ? first : second;
-        
     }
 }

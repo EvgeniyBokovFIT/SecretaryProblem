@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
 using DataContracts;
 using HostedServiceAndDI.Configuration;
-using HostedServiceAndDI.Exceptions;
+using Microsoft.Extensions.Hosting;
 
 namespace PrincessHttpClient;
 
-public class PrincessClient
+public class PrincessClient : IHostedService
 {
     private StrategyClient _strategy;
     
@@ -31,7 +31,7 @@ public class PrincessClient
     {
         double avg = 0;
         
-        for (int i = 1; i <= 10; i++)
+        for (int i = 1; i <= 100; i++)
         {
             _strategy.Reset();
             avg += SimulatePrincessBehaviourOnCurrentTry(i);
@@ -55,29 +55,16 @@ public class PrincessClient
     
     public ContenderDto ChooseContender(int tryId)
     {
-        try
-        {
-            for (int i = 0; i <= _contendersCount; i++)
-            {
-                var contender = GetNextContender(tryId).Result;
-                //Console.WriteLine(contender.Name + " SEQ NUM " + i);
-                if (_strategy.IsChosenContender(contender, tryId))
-                {
-                    //Console.WriteLine("FROM CHOOSE CONT");
-                    //Console.WriteLine(contender.Name);
-                    return contender;
-                }
-            }
-            
-        }
-        catch(EmptyHallException)
-        {
-            return new ContenderDto
-            {
-                Name = null
-            };
-        }
 
+        for (int i = 0; i <= _contendersCount; i++)
+        {
+            var contender = GetNextContender(tryId).Result;
+            if (_strategy.IsChosenContender(contender, tryId))
+            {
+                return contender;
+            }
+        }
+        
         return new ContenderDto
         {
             Name = null
@@ -87,14 +74,11 @@ public class PrincessClient
     private async Task<ContenderDto?> GetNextContender(int tryId)
     {
         var response = await _httpClient.PostAsync($"{tryId}/next", null);
-        //Console.WriteLine(response.Content.ReadAsStringAsync().Result);
 
         using (var stream = await response.Content.ReadAsStreamAsync())
         {
-            
             var contender = await JsonSerializer
                 .DeserializeAsync<ContenderDto>(stream, _options);
-            //Console.WriteLine($"_{contender.Name}_");
             return contender;
         } 
     }
@@ -113,6 +97,7 @@ public class PrincessClient
 
     private async Task Reset()
     {
+        _strategy.Reset();
         await _httpClient.PostAsync("reset", null);
     }
 
@@ -139,5 +124,16 @@ public class PrincessClient
         }
 
         return 0;
+    }
+
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
+        Task.Run(DoSeveralTries);
+        return Task.CompletedTask;
+    }
+
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
     }
 }
