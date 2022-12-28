@@ -19,10 +19,7 @@ public class StrategyClient
 
     public StrategyClient()
     {
-        Console.WriteLine("STRAT CONST");
-        
         _httpClient.BaseAddress = new Uri($"https://localhost:7194/freind/");
-
     }
 
     public void Reset()
@@ -107,11 +104,6 @@ public class StrategyClient
         ContenderDto contender = ViewedContenders[viewedContendersCount - 1];
         var contenderBetterThan = ViewedContenders.Count(checkedContender =>
             contender.Name == Compare(contender, checkedContender, tryId).Result.Name) - 1;
-        
-        // if (viewedContendersCount < 42)
-        // {
-        //     return false;
-        // }
 
         if (contenderBetterThan < viewedContendersCount - 5 || contenderBetterThan == viewedContendersCount - 2)
         {
@@ -122,7 +114,6 @@ public class StrategyClient
                                                  && contenderBetterThan != viewedContendersCount - 4
                                                  && contenderBetterThan != viewedContendersCount - 2)
         {
-            Console.WriteLine("1");
             return true;
         }
 
@@ -145,9 +136,6 @@ public class StrategyClient
 
         if (contenderBetterThan >= numOfContenders)
         {
-            Console.WriteLine("CONT BETTER THAN " + contenderBetterThan);
-            Console.WriteLine("NUM OF CONT " + numOfContenders);
-            Console.WriteLine("2");
             return true;
         }
 

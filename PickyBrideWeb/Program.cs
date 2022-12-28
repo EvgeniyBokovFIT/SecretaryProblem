@@ -1,6 +1,7 @@
 using HostedServiceAndDI.Entities;
 using HostedServiceAndDI.Repositories;
 using MassTransit;
+using PickyBrideWeb.Services;
 using SecretaryProblem.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<EnvironmentContext>();
+builder.Services.AddScoped<HallService>();
 builder.Services.AddSingleton<Hall>();
 builder.Services.AddSingleton<Friend>();
 builder.Services.AddScoped<ContenderRepository>();

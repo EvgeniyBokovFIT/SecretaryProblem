@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using DataContracts;
+using HostedServiceAndDI.Configuration;
 using MassTransit;
 
 namespace Consumer;
@@ -8,9 +9,9 @@ public class PrincessClient : IConsumer<ContenderDto>
 {
     private static StrategyClient? _strategy;
     
-    private readonly int _contendersCount = 100;
+    private readonly int _contendersCount = Config.GetContendersCount();
     
-    private readonly int _attemptsCount = 100;
+    private readonly int _attemptsCount = Config.GetAttemptsCount();
     
     private HttpClient _httpClient = new();
 
@@ -18,9 +19,7 @@ public class PrincessClient : IConsumer<ContenderDto>
 
     private static int _tryId = 1;
 
-    private static int avg;
-
-    private static int i;
+    private static double avg;
 
     public PrincessClient()
     {
@@ -86,19 +85,16 @@ public class PrincessClient : IConsumer<ContenderDto>
     public Task Consume(ConsumeContext<ContenderDto> context)
     {
         var contender = context.Message;
-        i++;
-        Console.WriteLine(contender.Name + " " + _tryId + " " + i);
         
         if (_strategy.IsChosenContender(contender, _tryId) || contender.Name is null)
         {
             avg += GetHappiness(SelectContender(_tryId).Result.Rank);
-            if (_tryId == 100)
+            if (_tryId == _attemptsCount)
             {
-                Console.WriteLine(avg/100.0);
+                Console.WriteLine(avg / Convert.ToDouble(_attemptsCount));
             }
             _tryId++;
             _strategy.Reset();
-            i = 0;
         }
 
         if (_tryId <= 100)

@@ -25,6 +25,7 @@ public class Princess : IHostedService
     public Princess(Hall hall, FileWriter fileWriter, IPrincessBehaviour behaviour, ContenderRepository contenderRepository)
     {
         _hall = hall;
+        _hall.FillContenders();
         _fileWriter = fileWriter;
         _strategy = behaviour;
         _contenderRepository = contenderRepository;

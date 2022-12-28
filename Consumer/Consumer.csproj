@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DataContracts\DataContracts.csproj" />
+      <ProjectReference Include="..\HostedServiceAndDI\HostedServiceAndDI.csproj" />
     </ItemGroup>
 
     <ItemGroup>

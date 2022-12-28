@@ -23,7 +23,8 @@ public class Hall
     {
         _generator = generator;
         
-        Contenders = new Queue<Contender>(_generator.GenerateContenders());
+        //Contenders = new Queue<Contender>(_generator.GenerateContenders());
+        Contenders = new Queue<Contender>();
 
         ContendersNames = new List<string>();
         

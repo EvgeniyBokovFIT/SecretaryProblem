@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace PrincessHttpClient;
 
-public class PrincessClient : IConsumer<ContenderDto>, IHostedService
+public class PrincessClient : IConsumer<ContenderDto>
 {
     private StrategyClient _strategy;
     
@@ -107,16 +107,6 @@ public class PrincessClient : IConsumer<ContenderDto>, IHostedService
             GetNextContender(_tryId);
         }
         
-        return Task.CompletedTask;
-    }
-
-    public Task StartAsync(CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
         return Task.CompletedTask;
     }
 }

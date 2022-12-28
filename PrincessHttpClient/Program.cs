@@ -20,7 +20,6 @@ await Host.CreateDefaultBuilder(args)
                 );
             });
         });
-        services.AddHostedService<PrincessClient>();
     })
     .Build()
     .RunAsync();
