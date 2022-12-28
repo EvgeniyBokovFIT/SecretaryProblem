@@ -23,7 +23,9 @@ public class Hall
     {
         _generator = generator;
         
-        Contenders = new Queue<Contender>(_generator.GenerateContenders());
+        //Contenders = new Queue<Contender>(_generator.GenerateContenders());
+
+        Contenders = new Queue<Contender>();
 
         ContendersNames = new List<string>();
         
@@ -37,7 +39,7 @@ public class Hall
     
     public virtual Contender GetNextContender()
     {
-        if (ContendersCount == 0)
+        if (Contenders.Count == 0)
         {
             LastViewedContender = null;
             throw new EmptyHallException("Hall is empty");

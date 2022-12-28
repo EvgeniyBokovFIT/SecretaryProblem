@@ -31,7 +31,7 @@ public class PrincessClient : IHostedService
     {
         double avg = 0;
         
-        for (int i = 1; i <= 100; i++)
+        for (int i = 1; i <= _attemptsCount; i++)
         {
             _strategy.Reset();
             avg += SimulatePrincessBehaviourOnCurrentTry(i);
@@ -56,7 +56,7 @@ public class PrincessClient : IHostedService
     public ContenderDto ChooseContender(int tryId)
     {
 
-        for (int i = 0; i <= _contendersCount; i++)
+        for (int i = 1; i <= _contendersCount + 1; i++)
         {
             var contender = GetNextContender(tryId).Result;
             if (_strategy.IsChosenContender(contender, tryId))
@@ -79,6 +79,7 @@ public class PrincessClient : IHostedService
         {
             var contender = await JsonSerializer
                 .DeserializeAsync<ContenderDto>(stream, _options);
+            
             return contender;
         } 
     }
