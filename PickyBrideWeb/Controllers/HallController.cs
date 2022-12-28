@@ -37,7 +37,6 @@ public class HallController
     [HttpPost("{tryId}/next")]
     public async Task NextContender(int tryId, string? session)
     {
-        //Console.WriteLine("NEXT");
         if (_hall.Contenders.Count == 0)
         {
             if (_checkedAttempts.Contains(tryId))
@@ -50,10 +49,6 @@ public class HallController
                         Name = null
                     });
                 return;
-                // return new ContenderDto
-                // {
-                //     Name = null
-                // };
             }
             _checkedAttempts.Add(tryId);
             

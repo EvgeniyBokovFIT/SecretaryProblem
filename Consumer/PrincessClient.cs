@@ -39,8 +39,6 @@ public class PrincessClient : IConsumer<ContenderDto>
     private async Task GetNextContender(int tryId)
     {
         var response = await _httpClient.PostAsync($"{tryId}/next", null);
-        //Console.WriteLine(response.Content.ReadAsStringAsync().Result);
-        
     }
 
     private async Task<RatingDto> SelectContender(int tryId)
@@ -93,8 +91,6 @@ public class PrincessClient : IConsumer<ContenderDto>
         
         if (_strategy.IsChosenContender(contender, _tryId) || contender.Name is null)
         {
-            //Console.WriteLine("FROM CHOOSE CONT");
-            //Console.WriteLine(contender.Name);
             avg += GetHappiness(SelectContender(_tryId).Result.Rank);
             if (_tryId == 100)
             {
